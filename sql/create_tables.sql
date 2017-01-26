@@ -22,7 +22,7 @@ CREATE TABLE Ehdokas(
   id SERIAL PRIMARY KEY,
   nimi varchar(100) NOT NULL,
   lisatieto varchar(1000),
-  aanestys_id INTEGER REFERENCES Aanestys(id),
+  aanestys_id INTEGER REFERENCES Aanestys(id)
 );
 
 CREATE TABLE Aani(
