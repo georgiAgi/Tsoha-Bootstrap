@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Muokkaa äänestyksen Miss Tekoäly tietoja</h1>
+<p>
+    <button class="btn btn-danger">Poista</button> 
+</p>
+<p>
+    <button class="btn btn-warning">Poista ehdokas</button> <button class="btn btn-success">Lisää ehdokas</button>
+</p>
+<form>
+    <div class="form-group">
+        <label>Nimi</label>
+        <input type="text" class="form-control" value="Armas Hella">
+    </div>
+    <div class="form-group">
+        <label>Alkamisaika</label>
+        <input type="text" class="form-control" value="27.1.2017">
+    </div>
+    <div class="form-group">
+        <label>Päättymisaika</label>
+        <input type="text" class="form-control" value="14.2.2017">
+    </div>
+    <div class="form-group">
+        <label>Lisätiedot</label>
+        <textarea class="form-control">Armas Hellan perustama äänestys kauneimmasta tekoälykkäästä droidista. Kauneuden täytyy olla sekä ulkoista että ns. sisäistä. Virtapiirien lisäksi hyvät käytöstavat ovat tärkeitä ominaisuuksia.
+        </textarea>
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox">
+            Anonyymi
+        </label>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Tallenna</button>
+    </div>
+</form>
+{% endblock %}
