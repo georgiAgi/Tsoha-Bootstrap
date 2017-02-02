@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Miss Tekoäly</h1>
+<h1>{{aanestys.nimi}}</h1>
 
 <p>
-    <a href="#" class="btn btn-success">Tulokset</a> <a href="#" class="btn btn-default">Muokkaa</a> 
+    <a href="#" class="btn btn-primary">Tulokset</a> <a href="#" class="btn btn-default">Muokkaa</a> 
 </p>
 <p>
-    Armas Hellan perustama äänestys kauneimmasta tekoälykkäästä droidista. Kauneuden täytyy olla sekä ulkoista että ns. sisäistä. Virtapiirien lisäksi hyvät käytöstavat ovat tärkeitä ominaisuuksia.
+    {{aanestys.lisatieto}}
 </p>
 <ul>
-    <li><strong>Järjestäjä:</strong> Armas Hella</li>
-    <li><strong>Alkamisaika:</strong> 27.1.2017</li>
-    <li><strong>Päättymisaika:</strong> 14.2.2017</li>
-    <li><strong>Status:</strong> <label class="label label-danger">kesken</label></li>
+    <li><strong>Järjestäjä:</strong> {{aanestys.jarjestaja_id}}</li> <!--ei toimi, miten tämän teen???-->
+    <li><strong>Alkamisaika:</strong> {{aanestys.alkamisaika}}</li>
+    <li><strong>Päättymisaika:</strong> {{aanestys.loppumisaika}}</li>
+    <li><strong>Status:</strong> <label class="label label-danger">kesken</label></li> <!--miten saan aikavertailun???-->
 </ul>
 <h3>Lista ehdokkaista</h3>
 <table class="table table-striped table-bordered">

@@ -5,33 +5,41 @@ $routes->get('/', function() {
 });
 
 $routes->get('/hiekkalaatikko', function() {
-    HelloWorldController::sandbox();
+    HelloWorldController::hiekka();
 });
 
 $routes->get('/candidate_edit', function() {
     HelloWorldController::candidateEdit();
 });
 
-  $routes->get('/candidate_show', function() {
+$routes->get('/candidate_show', function() {
     HelloWorldController::candidateShow();
 });
 
-  $routes->get('/user_edit', function() {
+$routes->get('/user_edit', function() {
     HelloWorldController::userEdit();
 });
 
-  $routes->get('/user_show', function() {
+$routes->get('/user_show', function() {
     HelloWorldController::userShow();
 });
 
-  $routes->get('/vote_edit', function() {
+$routes->get('/vote_edit', function() {
     HelloWorldController::voteEdit();
 });
 
-  $routes->get('/vote_show', function() {
-    HelloWorldController::voteShow();
+$routes->post('/vote_show', function() {
+    AanestysController::store();
 });
 
-  $routes->get('/vote_list', function() {
-    HelloWorldController::voteList();
+$routes->get('/vote_list', function() {
+    AanestysController::index();
+});
+
+$routes->get('/vote_new', function() {
+    AanestysController::newVote();
+});
+
+$routes->get('/vote_show/:id', function($id) {
+    AanestysController::show($id);
 });

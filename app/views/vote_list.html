@@ -3,7 +3,7 @@
 <h1>Lista äänestyksistä</h1>
 
 <p>
-    <a href="#" class="btn btn-success">Aloita uusi äänestys</a>
+    <a href="{{base_path}}/vote_new" class="btn btn-success">Aloita uusi äänestys</a>
 </p>
 
 <div class="checkbox">
@@ -19,21 +19,21 @@
             <th>Nimi</th>
             <th>Alkamisaika</th>
             <th>Päättymisaika</th>
-            <th>Status</th>
             <th>Järjestäjä</th>
             <th>Tulokset</th>
         </tr>
     </thead>
 
     <tbody>
+        {% for aanestys in aanestykset %}
         <tr>
-            <td><a href="#">Miss Tekoäly</a></td>
-            <td>27.1.2017</td>
-            <td>14.2.2017</td>
-            <td><label class="label label-danger">Kesken</label></td>
-            <td><a href="#">Armas Hella</a></td>
+            <td><a href="{{base_path}}/vote_show/{{aanestys.id}}">{{aanestys.nimi}}</a></td>
+            <td>{{aanestys.alkamisaika}}</td>
+            <td>{{aanestys.loppumisaika}}</td>
+            <td><a href="{{base_path}}/user_show/{{aanestys.jarjestaja_id}}">{{aanestys.jarjestaja_id}}</a></td>
             <th><a class="btn btn-default btn-sm" href="#">Tuloksiin</a></th>
         </tr>
+        {% endfor %}
     </tbody>
 </table>
 {% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Aloita uusi äänestys</h1>
+<form method="post" action="{{base_path}}/vote_show">
+    <div class="form-group">
+        <label>Äänestyksen nimi</label>
+        <input type="text" name="nimi" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label>Äänestyksen kuvaus</label>
+        <textarea name="lisatieto" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Äänestyksen alkamispäivä</label>
+        <input type="date" name="alkamisaika" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label>Äänestyksen päättymispäivä</label>
+        <input type="date" name="loppumisaika" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label>Onko äänestys anonyymi vai täytyykö olla rekisteröitynyt käyttäjä äänestääkseen?</label>
+        <select name="anonyymi">
+            <option value="TRUE">Anonyymiäänestys</option>
+            <option value="FALSE">Vain rekisteröityneet käyttäjät</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Lisää</button>
+    </div>
+</form>
+{% endblock %}

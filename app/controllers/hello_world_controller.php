@@ -9,8 +9,20 @@ class HelloWorldController extends BaseController {
     }
 
     public static function sandbox() {
+        $armas = Kayttaja::find(1);
+        $kayttajat = Kayttaja::all();
+        $misstekoaly = Aanestys::find(1);
+        $aanestykset = Aanestys::all();
+        // Kint-luokan dump-metodi tulostaa muuttujan arvon
+        Kint::dump($kayttajat);
+        Kint::dump($armas);
+        Kint::dump($aanestykset);
+        Kint::dump($misstekoaly);
+    }
+
+    public static function hiekka() {
         // Testaa koodiasi täällä
-        View::make('vote_edit.html');
+        View::make('hiekkalaatikko.html');
     }
 
     public static function candidateEdit() {
@@ -27,6 +39,7 @@ class HelloWorldController extends BaseController {
         // Testaa koodiasi täällä
         View::make('user_edit.html');
     }
+
     public static function userShow() {
         // Testaa koodiasi täällä
         View::make('user_show.html');

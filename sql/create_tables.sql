@@ -9,8 +9,9 @@ CREATE TABLE Aanestys(
   nimi varchar(100) NOT NULL, -- Muista erottaa sarakkeiden määrittelyt pilkulla!
   jarjestaja_id INTEGER REFERENCES Kayttaja(id),
   lisatieto varchar(1000),
-  alkamisaika DATE,
-  loppumisaika DATE
+  alkamisaika DATE NOT NULL,
+  loppumisaika DATE,
+  anonyymi BOOLEAN
 );
 
 CREATE TABLE Aanestajalista(

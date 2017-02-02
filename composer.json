@@ -3,6 +3,7 @@
 		"classmap": [
 			"config/database.php",
 			"lib",
+                        "app/models",
 			"app/controllers"
 		]
 	},
