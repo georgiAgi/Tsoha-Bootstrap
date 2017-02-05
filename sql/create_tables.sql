@@ -30,5 +30,5 @@ CREATE TABLE Aani(
   id SERIAL PRIMARY KEY,
   ehdokas_id INTEGER REFERENCES Ehdokas(id),
   aanestys_id INTEGER REFERENCES Aanestys(id),
-  aika DATE
+  aika TIMESTAMP NOW()
 );
