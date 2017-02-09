@@ -44,6 +44,10 @@ $routes->get('/vote_show/:id', function($id) {
     AanestysController::show($id);
 });
 
+$routes->get('/vote_edit', function() {
+    HelloWorldController::voteEdit();
+});
+
 $routes->get('/vote_edit/:id', function($id) {
     AanestysController::edit($id);
 });
