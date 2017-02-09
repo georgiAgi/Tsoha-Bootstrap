@@ -9,7 +9,7 @@
     {{aanestys.lisatieto}}
 </p>
 <ul>
-    <li><strong>Järjestäjä:</strong> {{aanestys.jarjestaja_id}}</li> <!--ei toimi, miten tämän teen???-->
+    <li><strong>Järjestäjä:</strong> {{aanestys.findJarjestaja(aanestys.id)}}</li> <!--ei toimi, miten tämän teen???-->
     <li><strong>Alkamisaika:</strong> {{aanestys.alkamisaika}}</li>
     <li><strong>Päättymisaika:</strong> {{aanestys.loppumisaika}}</li>
     <li><strong>Status:</strong> <label class="label label-danger">kesken</label></li> <!--miten saan aikavertailun???-->

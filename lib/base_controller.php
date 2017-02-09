@@ -8,7 +8,7 @@ class BaseController {
             $user_id = $_SESSION['user'];
             // Pyydetään User-mallilta käyttäjä session mukaisella id:llä
             $kayttaja = Kayttaja::find($user_id);
-
+            
             return $kayttaja;
         }
 

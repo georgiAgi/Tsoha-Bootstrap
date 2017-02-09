@@ -30,7 +30,7 @@
             <td><a href="{{base_path}}/vote_show/{{aanestys.id}}">{{aanestys.nimi}}</a></td>
             <td>{{aanestys.alkamisaika}}</td>
             <td>{{aanestys.loppumisaika}}</td>
-            <td><a href="{{base_path}}/user_show/{{aanestys.jarjestaja_id}}">{{aanestys.jarjestaja_id}}</a></td>
+            <td><a href="{{base_path}}/user_show/{{aanestys.jarjestaja_id}}">{{aanestys.findJarjestaja(aanestys.id)}}</a></td>
             <th><a class="btn btn-default btn-sm" href="#">Tuloksiin</a></th>
         </tr>
         {% endfor %}

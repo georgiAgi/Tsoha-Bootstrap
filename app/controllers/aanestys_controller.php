@@ -19,13 +19,15 @@ class AanestysController extends BaseController {
     public static function store() {
         // POST-pyynnön muuttujat sijaitsevat $_POST nimisessä assosiaatiolistassa
         $params = $_POST;
+        $jarjestaja = self::get_user_logged_in();
         // Alustetaan uusi Game-luokan olion käyttäjän syöttämillä arvoilla
         $aanestys = new Aanestys(array(
             'nimi' => $params['nimi'],
             'lisatieto' => $params['lisatieto'],
             'alkamisaika' => $params['alkamisaika'],
             'loppumisaika' => $params['loppumisaika'],
-            'anonyymi' => $params['anonyymi']
+            'anonyymi' => $params['anonyymi'],
+            'jarjestaja_id' => $jarjestaja->id
         ));
         // Kutsutaan alustamamme olion save metodia, joka tallentaa olion tietokantaan
         $aanestys->save();

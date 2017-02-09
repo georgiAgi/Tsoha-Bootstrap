@@ -54,6 +54,20 @@ class Aanestys extends BaseModel {
 
         return null;
     }
+    
+        public static function findJarjestaja($id) {
+        $query = DB::connection()->prepare('SELECT Kayttaja.nimi FROM Kayttaja, Aanestys WHERE Aanestys.id = :id AND Kayttaja.id = Aanestys.jarjestaja_id LIMIT 1');
+        $query->execute(array('id' => $id));
+        $row = $query->fetch();
+
+        if ($row) {
+            $jarjestaja = $row['nimi'];
+
+            return $jarjestaja;
+        }
+
+        return null;
+    }
 
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Aanestys (nimi, jarjestaja_id, lisatieto, alkamisaika, loppumisaika, anonyymi) VALUES (:nimi, :jarjestaja_id, :lisatieto, :alkamisaika, :loppumisaika, :anonyymi) RETURNING id');

@@ -24,6 +24,18 @@ $routes->get('/user_show', function() {
     HelloWorldController::userShow();
 });
 
+$routes->get('/user_show/:id', function($id) {
+    KayttajaController::show($id);
+});
+
+$routes->get('/user_login', function(){
+    KayttajaController::login();
+});
+
+$routes->post('/user_login', function(){
+    KayttajaController::handle_login();
+});
+
 $routes->get('/vote_show', function() {
     HelloWorldController::voteShow();
 });
@@ -62,11 +74,4 @@ $routes->get('/vote_delete/:id', function($id) {
 
 $routes->post('/vote_delete/:id', function($id) {
     AanestysController::destroy($id);
-});
-
-$routes->get('/user_login', function(){
-  KayttajaController::login();
-});
-$routes->post('/user_login', function(){
-  KayttajaController::handle_login();
 });
