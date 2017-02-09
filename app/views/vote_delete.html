@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Haluatko varmasti poistaa {{aanestys.nimi}} -äänestyksen</h1>
+<form method="post" action="{{base_path}}/vote_delete/{{aanestys.id}}">
+<p>
+    <a href="{{base_path}}/vote_edit/{{aanestys.id}}"  class="btn btn-default">En</a> 
+</p>
+    <div class="form-group">
+        <button type="submit" class="btn btn-danger">Poista</button>
+    </div>
+<p>
+    {{aanestys.lisatieto}}
+</p>
+</form>
+{% endblock %}

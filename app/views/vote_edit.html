@@ -1,35 +1,36 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Muokkaa äänestyksen Miss Tekoäly tietoja</h1>
+<h1>Muokkaa äänestyksen {{aanestys.nimi}} tietoja</h1>
+<h3>Muista täyttää joka kohta</h3>
 <p>
-    <button class="btn btn-danger">Poista</button> 
+    <a href="{{base_path}}/vote_delete/{{aanestys.id}}" class="btn btn-danger">Poista</a> 
 </p>
 <p>
     <button class="btn btn-warning">Poista ehdokas</button> <button class="btn btn-success">Lisää ehdokas</button>
 </p>
-<form>
+<form method="post" action="{{base_path}}/vote_edit/{{aanestys.id}}">
     <div class="form-group">
         <label>Nimi</label>
-        <input type="text" class="form-control" value="Armas Hella">
+        <input type="text" name="nimi" class="form-control" value={{aanestys.nimi}}>
     </div>
     <div class="form-group">
         <label>Alkamisaika</label>
-        <input type="text" class="form-control" value="27.1.2017">
+        <input type="date" name="alkamisaika" class="form-control">
     </div>
     <div class="form-group">
         <label>Päättymisaika</label>
-        <input type="text" class="form-control" value="14.2.2017">
+        <input type="date" name="loppumisaika" class="form-control">
     </div>
     <div class="form-group">
-        <label>Lisätiedot</label>
-        <textarea class="form-control">Armas Hellan perustama äänestys kauneimmasta tekoälykkäästä droidista. Kauneuden täytyy olla sekä ulkoista että ns. sisäistä. Virtapiirien lisäksi hyvät käytöstavat ovat tärkeitä ominaisuuksia.
-        </textarea>
+        <label>Äänestyksen kuvaus</label>
+        <textarea name="lisatieto" class="form-control">{{aanestys.lisatieto}}</textarea>
     </div>
-    <div class="checkbox">
-        <label>
-            <input type="checkbox">
-            Anonyymi
-        </label>
+    <div class="form-group">
+        <label>Onko äänestys anonyymi vai täytyykö olla rekisteröitynyt käyttäjä äänestääkseen?</label>
+        <select name="anonyymi">
+            <option value="TRUE">Anonyymiäänestys</option>
+            <option value="FALSE">Vain rekisteröityneet käyttäjät</option>
+        </select>
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Tallenna</button>

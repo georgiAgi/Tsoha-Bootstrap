@@ -1,7 +1,8 @@
 CREATE TABLE Kayttaja(
   id SERIAL PRIMARY KEY, -- SERIAL tyyppinen pääavain pitää huolen, että tauluun lisätyllä rivillä on aina uniikki pääavain. Kätevää!
   nimi varchar(100) NOT NULL, -- Muista erottaa sarakkeiden määrittelyt pilkulla!
-  tiedot varchar(1000)
+  tiedot varchar(1000),
+  salasana varchar(100) NOT NULL
 );
 
 CREATE TABLE Aanestys(

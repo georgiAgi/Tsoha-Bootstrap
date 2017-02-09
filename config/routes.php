@@ -24,8 +24,8 @@ $routes->get('/user_show', function() {
     HelloWorldController::userShow();
 });
 
-$routes->get('/vote_edit', function() {
-    HelloWorldController::voteEdit();
+$routes->get('/vote_show', function() {
+    HelloWorldController::voteShow();
 });
 
 $routes->post('/vote_show', function() {
@@ -42,4 +42,27 @@ $routes->get('/vote_new', function() {
 
 $routes->get('/vote_show/:id', function($id) {
     AanestysController::show($id);
+});
+
+$routes->get('/vote_edit/:id', function($id) {
+    AanestysController::edit($id);
+});
+
+$routes->post('/vote_edit/:id', function($id) {
+    AanestysController::update($id);
+});
+
+$routes->get('/vote_delete/:id', function($id) {
+    AanestysController::delete($id);
+});
+
+$routes->post('/vote_delete/:id', function($id) {
+    AanestysController::destroy($id);
+});
+
+$routes->get('/user_login', function(){
+  KayttajaController::login();
+});
+$routes->post('/user_login', function(){
+  KayttajaController::handle_login();
 });

@@ -61,5 +61,22 @@ class Aanestys extends BaseModel {
         $row = $query->fetch();
         $this->id = $row['id'];
     }
+
+    public function update() {
+        $query = DB::connection()->prepare('UPDATE Aanestys SET nimi = :nimi, jarjestaja_id = :jarjestaja_id, lisatieto = :lisatieto, alkamisaika = :alkamisaika, loppumisaika = :loppumisaika, anonyymi = :anonyymi WHERE id = :id');
+        $query->execute(array('nimi' => $this->nimi, 'jarjestaja_id' => $this->jarjestaja_id, 'lisatieto' => $this->lisatieto, 'alkamisaika' => $this->alkamisaika, 'loppumisaika' => $this->loppumisaika, 'anonyymi' => $this->anonyymi, 'id' => $this->id));
+    }
+
+    public function destroy() {
+        $query = DB::connection()->prepare('DELETE FROM Aanestys WHERE id = :id');
+        $query->execute(array('id' => $this->id));
+    }
+
+    public function validate_name() {
+        $errors = array();
+        $errors = array_merge($errors, validate_string_minimum_length($this->nimi, 3));
+        $errors = array_merge($errors, validate_string_maximum_length($this->nimi, 100));
+        return $errors;
+    }
+
 }
-    
