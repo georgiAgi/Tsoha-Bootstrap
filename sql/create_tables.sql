@@ -12,7 +12,7 @@ CREATE TABLE Aanestys(
   lisatieto varchar(1000),
   alkamisaika DATE NOT NULL,
   loppumisaika DATE,
-  anonyymi BOOLEAN
+  anonyymi BOOLEAN TRUE
 );
 
 CREATE TABLE Aanestajalista(

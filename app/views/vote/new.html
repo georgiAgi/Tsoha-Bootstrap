@@ -1,25 +1,38 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Aloita uusi äänestys</h1>
-<form method="post" action="{{base_path}}/vote_show">
+
+{% if errors %}
+<div class="alert alert-danger">
+
+    {% for error in errors %}
+    <ul>
+        <li>{{error}}</li>
+    </ul>
+    {% endfor %}
+
+</div>
+{% endif %}
+
+<form method="post" action="{{base_path}}/vote/show">
     <div class="form-group">
         <label>Äänestyksen nimi</label>
-        <input type="text" name="nimi" class="form-control">
+        <input type="text" name="nimi" class="form-control" value={{aanestys.nimi}}>
     </div>
 
     <div class="form-group">
         <label>Äänestyksen kuvaus</label>
-        <textarea name="lisatieto" class="form-control"></textarea>
+        <textarea name="lisatieto" class="form-control">{{aanestys.lisatieto}}</textarea>
     </div>
 
     <div class="form-group">
         <label>Äänestyksen alkamispäivä</label>
-        <input type="date" name="alkamisaika" class="form-control">
+        <input type="date" name="alkamisaika" class="form-control" value={{aanestys.alkamisaika}}>
     </div>
 
     <div class="form-group">
         <label>Äänestyksen päättymispäivä</label>
-        <input type="date" name="loppumisaika" class="form-control">
+        <input type="date" name="loppumisaika" class="form-control" value={{aanestys.loppumisaika}}>
     </div>
 
     <div class="form-group">
@@ -29,9 +42,10 @@
             <option value="FALSE">Vain rekisteröityneet käyttäjät</option>
         </select>
     </div>
-
+    
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Lisää</button>
     </div>
+    
 </form>
 {% endblock %}

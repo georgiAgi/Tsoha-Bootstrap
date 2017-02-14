@@ -10,19 +10,19 @@ Yleisiä linkkejä:
 * [Linkki sovellukseeni](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/)
 * [Linkki dokumentaatiooni](https://github.com/georgiAgi/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
 
-[Linkki äänestyslistaan](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/vote_list) 
+[Linkki äänestyslistaan](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/vote/list) 
 
-[Linkki äänestysnäkymään](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/vote_show) 
+[Linkki äänestysnäkymään](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/vote/show) 
 
-[Linkki äänestyksen muokkaukseen](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/vote_edit) 
+[Linkki äänestyksen muokkaukseen](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/vote/edit) 
 
-[Linkki ehdokasnäkymään](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/candidate_show) 
+[Linkki ehdokasnäkymään](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/candidate/show) 
 
-[Linkki ehdokkaan muokkaukseen](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/candidate_edit)
+[Linkki ehdokkaan muokkaukseen](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/candidate/edit)
 
-[Linkki käyttäjänäkymään](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/user_show)
+[Linkki käyttäjänäkymään](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/user/show)
 
-[Linkki käyttäjän muokkaukseen](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/user_edit) 
+[Linkki käyttäjän muokkaukseen](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/user/edit) 
 
 ## Työn aihe
 

@@ -1,77 +1,97 @@
 <?php
 
+function check_logged_in() {
+    BaseController::check_logged_in();
+}
+
 $routes->get('/', function() {
     HelloWorldController::index();
 });
 
 $routes->get('/hiekkalaatikko', function() {
-    HelloWorldController::hiekka();
+    HelloWorldController::sandbox();
 });
 
-$routes->get('/candidate_edit', function() {
+$routes->get('/candidate/edit', function() {
     HelloWorldController::candidateEdit();
 });
 
-$routes->get('/candidate_show', function() {
+$routes->get('/candidate/show', function() {
     HelloWorldController::candidateShow();
 });
 
-$routes->get('/user_edit', function() {
-    HelloWorldController::userEdit();
+$routes->get('/user/edit/:id', 'check_logged_in', function($id) {
+    KayttajaController::edit($id);
 });
 
-$routes->get('/user_show', function() {
+$routes->post('/user/edit/:id', function($id) {
+    KayttajaController::update($id);
+});
+
+$routes->get('/user/show', function() {
     HelloWorldController::userShow();
 });
 
-$routes->get('/user_show/:id', function($id) {
+$routes->get('/user/show/:id', function($id) {
     KayttajaController::show($id);
 });
 
-$routes->get('/user_login', function(){
+$routes->get('/user/login', function() {
     KayttajaController::login();
 });
 
-$routes->post('/user_login', function(){
+$routes->post('/user/logout', function() {
+    KayttajaController::logout();
+});
+
+$routes->post('/user/login', function() {
     KayttajaController::handle_login();
 });
 
-$routes->get('/vote_show', function() {
+$routes->get('/user/register', function() {
+    KayttajaController::register();
+});
+
+$routes->post('/user/register', function() {
+    KayttajaController::handle_register();
+});
+
+$routes->get('/vote/show', function() {
     HelloWorldController::voteShow();
 });
 
-$routes->post('/vote_show', function() {
+$routes->post('/vote/show', function() {
     AanestysController::store();
 });
 
-$routes->get('/vote_list', function() {
+$routes->get('/vote/list', function() {
     AanestysController::index();
 });
 
-$routes->get('/vote_new', function() {
+$routes->get('/vote/new', 'check_logged_in', function() {
     AanestysController::newVote();
 });
 
-$routes->get('/vote_show/:id', function($id) {
+$routes->get('/vote/show/:id', function($id) {
     AanestysController::show($id);
 });
 
-$routes->get('/vote_edit', function() {
+$routes->get('/vote/edit', function() { //HUOM HELLOWORLD, EI OIKEAA KÄYTTÖÄ
     HelloWorldController::voteEdit();
 });
 
-$routes->get('/vote_edit/:id', function($id) {
+$routes->get('/vote/edit/:id', 'check_logged_in', function($id) {
     AanestysController::edit($id);
 });
 
-$routes->post('/vote_edit/:id', function($id) {
+$routes->post('/vote/edit/:id', function($id) {
     AanestysController::update($id);
 });
 
-$routes->get('/vote_delete/:id', function($id) {
+$routes->get('/vote/delete/:id', function($id) {
     AanestysController::delete($id);
 });
 
-$routes->post('/vote_delete/:id', function($id) {
+$routes->post('/vote/delete/:id', function($id) {
     AanestysController::destroy($id);
 });

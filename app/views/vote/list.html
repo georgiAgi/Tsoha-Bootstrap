@@ -1,17 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
+
+{% if message %}
+<div class="alert alert-success">
+    {{message}}
+</div>
+{% endif %}
+
 <h1>Lista äänestyksistä</h1>
 
 <p>
-    <a href="{{base_path}}/vote_new" class="btn btn-success">Aloita uusi äänestys</a>
+    <a href="{{base_path}}/vote/new" class="btn btn-success">Aloita uusi äänestys</a>
 </p>
 
-<div class="checkbox">
+<!--<div class="checkbox">
     <label>
         <input type="checkbox">
         Näytä vain anonyymit äänestykset
     </label>
-</div>
+</div>-->
 
 <table class="table table-striped table-bordered">
     <thead>
@@ -20,6 +27,7 @@
             <th>Alkamisaika</th>
             <th>Päättymisaika</th>
             <th>Järjestäjä</th>
+            <th>Äänestysoikeus</th>
             <th>Tulokset</th>
         </tr>
     </thead>
@@ -27,10 +35,11 @@
     <tbody>
         {% for aanestys in aanestykset %}
         <tr>
-            <td><a href="{{base_path}}/vote_show/{{aanestys.id}}">{{aanestys.nimi}}</a></td>
+            <td><a href="{{base_path}}/vote/show/{{aanestys.id}}">{{aanestys.nimi}}</a></td>
             <td>{{aanestys.alkamisaika}}</td>
             <td>{{aanestys.loppumisaika}}</td>
-            <td><a href="{{base_path}}/user_show/{{aanestys.jarjestaja_id}}">{{aanestys.findJarjestaja(aanestys.id)}}</a></td>
+            <td><a href="{{base_path}}/user/show/{{aanestys.jarjestaja_id}}">{{aanestys.find_jarjestaja(aanestys.id)}}</a></td>
+            <td>{{aanestys.anonyymi(aanestys.id)}}</td>
             <th><a class="btn btn-default btn-sm" href="#">Tuloksiin</a></th>
         </tr>
         {% endfor %}

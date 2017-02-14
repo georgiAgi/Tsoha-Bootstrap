@@ -2,24 +2,37 @@
 {% block content %}
 <h1>Muokkaa äänestyksen {{aanestys.nimi}} tietoja</h1>
 <h3>Muista täyttää joka kohta</h3>
+
+{% if errors %}
+<div class="alert alert-danger">
+
+    {% for error in errors %}
+    <ul>
+        <li>{{error}}</li>
+    </ul>
+    {% endfor %}
+
+</div>
+{% endif %}
+
 <p>
-    <a href="{{base_path}}/vote_delete/{{aanestys.id}}" class="btn btn-danger">Poista</a> 
+    <a href="{{base_path}}/vote/delete/{{aanestys.id}}" class="btn btn-danger">Poista</a> 
 </p>
 <p>
     <button class="btn btn-warning">Poista ehdokas</button> <button class="btn btn-success">Lisää ehdokas</button>
 </p>
-<form method="post" action="{{base_path}}/vote_edit/{{aanestys.id}}">
+<form method="post" action="{{base_path}}/vote/edit/{{aanestys.id}}">
     <div class="form-group">
         <label>Nimi</label>
         <input type="text" name="nimi" class="form-control" value={{aanestys.nimi}}>
     </div>
     <div class="form-group">
         <label>Alkamisaika</label>
-        <input type="date" name="alkamisaika" class="form-control">
+        <input type="date" name="alkamisaika" class="form-control" value={{aanestys.alkamisaika}}>
     </div>
     <div class="form-group">
         <label>Päättymisaika</label>
-        <input type="date" name="loppumisaika" class="form-control">
+        <input type="date" name="loppumisaika" class="form-control" value={{aanestys.loppumisaika}}>
     </div>
     <div class="form-group">
         <label>Äänestyksen kuvaus</label>

@@ -2,17 +2,23 @@
 {% block content %}
 <h1>{{aanestys.nimi}}</h1>
 
+{% if message %}
+<div class="alert alert-danger">
+<ul><li>{{message}}</li></ul>
+</div>
+{% endif %}
+
 <p>
-    <a href="#" class="btn btn-primary">Tulokset</a> <a href="{{base_path}}/vote_edit/{{aanestys.id}}"  class="btn btn-default">Muokkaa</a> 
+    <a href="#" class="btn btn-primary">Tulokset</a> <a href="{{base_path}}/vote/edit/{{aanestys.id}}"  class="btn btn-default">Muokkaa</a> 
 </p>
 <p>
     {{aanestys.lisatieto}}
 </p>
 <ul>
-    <li><strong>Järjestäjä:</strong> {{aanestys.findJarjestaja(aanestys.id)}}</li> <!--ei toimi, miten tämän teen???-->
+    <li><strong>Järjestäjä:</strong> <a href="{{base_path}}/user/show/{{aanestys.jarjestaja_id}}">{{aanestys.find_jarjestaja(aanestys.id)}}</a></li>
     <li><strong>Alkamisaika:</strong> {{aanestys.alkamisaika}}</li>
     <li><strong>Päättymisaika:</strong> {{aanestys.loppumisaika}}</li>
-    <li><strong>Status:</strong> <label class="label label-danger">kesken</label></li> <!--miten saan aikavertailun???-->
+<!--    <li><strong>Status:</strong> <label class="label label-danger">kesken</label></li> <!--miten saan aikavertailun???-->
 </ul>
 <h3>Lista ehdokkaista</h3>
 <table class="table table-striped table-bordered">

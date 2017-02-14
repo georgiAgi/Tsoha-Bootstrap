@@ -4,18 +4,18 @@ class AanestysController extends BaseController {
 
     public static function index() {
         $aanestykset = Aanestys::all();
-        View::make('vote_list.html', array('aanestykset' => $aanestykset));
+        View::make('vote/list.html', array('aanestykset' => $aanestykset));
     }
 
     public function show($id) {
         $aanestys = Aanestys::find($id);
-        View::make('vote_show.html', array('aanestys' => $aanestys)); //voiko olla käyttämättä array
+        View::make('vote/show.html', array('aanestys' => $aanestys)); //voiko olla käyttämättä array
     }
 
     public function newVote() {
-        View::make('vote_new.html');
+        View::make('vote/new.html');
     }
-    
+
     public static function store() {
         // POST-pyynnön muuttujat sijaitsevat $_POST nimisessä assosiaatiolistassa
         $params = $_POST;
@@ -30,15 +30,24 @@ class AanestysController extends BaseController {
             'jarjestaja_id' => $jarjestaja->id
         ));
         // Kutsutaan alustamamme olion save metodia, joka tallentaa olion tietokantaan
-        $aanestys->save();
+        $errors = $aanestys->errors();
 
-        // Ohjataan käyttäjä lisäyksen jälkeen pelin esittelysivulle
-        Redirect::to('/vote_show/' . $aanestys->id, array('message' => 'Äänestys on aloitettu!'));
+        if (count($errors) == 0) {
+            $aanestys->save();
+
+            Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Äänestys on aloitettu!'));
+        } else {
+            View::make('vote/new.html', array('errors' => $errors, 'aanestys' => $aanestys));
+        }
     }
 
     public static function edit($id) {
         $aanestys = Aanestys::find($id);
-        View::make('vote_edit.html', array('aanestys' => $aanestys));
+        $user = self::get_user_logged_in();
+        if ($user->id == $aanestys->jarjestaja_id) {
+            View::make('vote/edit.html', array('aanestys' => $aanestys));
+        }
+        Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Vain järjestäjä voi muokata äänestystä!'));
     }
 
     public static function update($id) {
@@ -52,18 +61,17 @@ class AanestysController extends BaseController {
             'loppumisaika' => $params['loppumisaika'],
             'anonyymi' => $params['anonyymi']
         );
-        
-        $aanestys = new Aanestys($attributes);
-        //$errors = $aanestys->errors();'errors' => $errors,
 
-//        if (count($errors) > 0) {
-//            View::make('vote_edit.html', array('attributes' => $attributes));
-//        } else {
-            // Kutsutaan alustetun olion update-metodia, joka päivittää pelin tiedot tietokannassa
+        $aanestys = new Aanestys($attributes);
+
+        $errors = $aanestys->errors();
+        if (count($errors) > 0) {
+            View::make('vote/edit.html', array('aanestys' => $attributes, 'errors' => $errors));
+        } else {
             $aanestys->update();
 
-            Redirect::to('/vote_show/' . $aanestys->id, array('message' => 'Äänestystä on muokattu onnistuneesti!'));
-//        }
+            Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Äänestystä on muokattu onnistuneesti!'));
+        }
     }
 
     public static function destroy($id) {
@@ -72,12 +80,16 @@ class AanestysController extends BaseController {
         $aanestys->destroy();
 
         // Ohjataan käyttäjä pelien listaussivulle ilmoituksen kera
-        Redirect::to('/vote_list', array('message' => 'Äänestys on poistettu onnistuneesti!'));
+        Redirect::to('/vote/list', array('message' => 'Äänestys on poistettu onnistuneesti!'));
     }
 
     public function delete($id) {
         $aanestys = Aanestys::find($id);
-        View::make('vote_delete.html', array('aanestys' => $aanestys));
+        $user = self::get_user_logged_in();
+        if ($user->id == $aanestys->jarjestaja_id) {
+            View::make('vote/delete.html', array('aanestys' => $aanestys));
+        }
+        Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Vain järjestäjä voi poistaa äänestyksen!'));
     }
 
 }

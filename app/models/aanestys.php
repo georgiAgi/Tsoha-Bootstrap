@@ -6,6 +6,7 @@ class Aanestys extends BaseModel {
 
     public function __construct($attributes) {
         parent::__construct($attributes);
+        $this->validators = array('validate_nimi', 'validate_alkamisaika', 'validate_loppumisaika', 'validate_lisatieto');
     }
 
     public static function all() {
@@ -54,8 +55,8 @@ class Aanestys extends BaseModel {
 
         return null;
     }
-    
-        public static function findJarjestaja($id) {
+
+    public static function find_jarjestaja($id) {
         $query = DB::connection()->prepare('SELECT Kayttaja.nimi FROM Kayttaja, Aanestys WHERE Aanestys.id = :id AND Kayttaja.id = Aanestys.jarjestaja_id LIMIT 1');
         $query->execute(array('id' => $id));
         $row = $query->fetch();
@@ -68,6 +69,14 @@ class Aanestys extends BaseModel {
 
         return null;
     }
+    
+    public static function anonyymi($id) {
+        $aanestys = self::find($id);
+        if ($aanestys->anonyymi) {
+            return 'Anonyymi';
+        }
+        return 'Rekisteröityneet käyttäjät';
+    }
 
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Aanestys (nimi, jarjestaja_id, lisatieto, alkamisaika, loppumisaika, anonyymi) VALUES (:nimi, :jarjestaja_id, :lisatieto, :alkamisaika, :loppumisaika, :anonyymi) RETURNING id');
@@ -77,8 +86,8 @@ class Aanestys extends BaseModel {
     }
 
     public function update() {
-        $query = DB::connection()->prepare('UPDATE Aanestys SET nimi = :nimi, jarjestaja_id = :jarjestaja_id, lisatieto = :lisatieto, alkamisaika = :alkamisaika, loppumisaika = :loppumisaika, anonyymi = :anonyymi WHERE id = :id');
-        $query->execute(array('nimi' => $this->nimi, 'jarjestaja_id' => $this->jarjestaja_id, 'lisatieto' => $this->lisatieto, 'alkamisaika' => $this->alkamisaika, 'loppumisaika' => $this->loppumisaika, 'anonyymi' => $this->anonyymi, 'id' => $this->id));
+        $query = DB::connection()->prepare('UPDATE Aanestys SET nimi = :nimi, lisatieto = :lisatieto, alkamisaika = :alkamisaika, loppumisaika = :loppumisaika, anonyymi = :anonyymi WHERE id = :id');
+        $query->execute(array('nimi' => $this->nimi, 'lisatieto' => $this->lisatieto, 'alkamisaika' => $this->alkamisaika, 'loppumisaika' => $this->loppumisaika, 'anonyymi' => $this->anonyymi, 'id' => $this->id));
     }
 
     public function destroy() {
@@ -86,11 +95,40 @@ class Aanestys extends BaseModel {
         $query->execute(array('id' => $this->id));
     }
 
-    public function validate_name() {
+    public function validate_nimi() {
         $errors = array();
-        $errors = array_merge($errors, validate_string_minimum_length($this->nimi, 3));
-        $errors = array_merge($errors, validate_string_maximum_length($this->nimi, 100));
+        $errors = array_merge($errors, $this->validate_string_minimum_length($this->nimi, 3));
+        $errors = array_merge($errors, $this->validate_string_maximum_length($this->nimi, 100));
         return $errors;
     }
 
+    public function validate_lisatieto() {
+        $errors = array();
+        $errors = array_merge($errors, $this->validate_string_maximum_length($this->lisatieto, 1000));
+        return $errors;
+    }
+
+    public function validate_alkamisaika() {
+        return self::validate_date($this->alkamisaika);
+    }
+
+    public function validate_loppumisaika() {
+        return self::validate_date($this->loppumisaika);
+    }
+
+    public function validate_date($date) {
+        $errors = array();
+        
+        if ($date == '') {
+            $errors[] = 'Päivämäärä täytyy päättää';
+        }
+
+        $d = DateTime::createFromFormat('Y-m-d', $date);
+        if ($d && $d->format('Y-m-d') !== $date) {
+            $errors[] = 'Päivämäärä täytyy päättää!';
+        }
+
+        return $errors;
+    }
+    
 }

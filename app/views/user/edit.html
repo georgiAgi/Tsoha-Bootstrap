@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Muokkaa käyttäjän {{kayttaja.nimi}} tietoja</h1>
+
+{% if errors %}
+<div class="alert alert-danger">
+
+    {% for error in errors %}
+    <ul>
+        <li>{{error}}</li>
+    </ul>
+    {% endfor %}
+
+</div>
+{% endif %}
+
+<form method="post" action="{{base_path}}/user/edit/{{kayttaja.id}}">
+    <div class="form-group">
+        <label>Nimi</label>
+        <input type="text" class="form-control" name="nimi" value={{kayttaja.nimi}}>
+    </div>
+    <div class="form-group">
+        <label>Kuvaus</label>
+        <textarea class="form-control" name="tiedot">{{kayttaja.tiedot}}</textarea>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Tallenna</button>
+    </div>
+</form>
+{% endblock %}

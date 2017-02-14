@@ -22,6 +22,7 @@ class BaseModel {
 
         foreach ($this->validators as $validator) {
             // Kutsu validointimetodia tässä ja lisää sen palauttamat virheet errors-taulukkoon
+            $errors = array_merge($errors, $this->$validator());
         }
 
         return $errors;
@@ -33,17 +34,17 @@ class BaseModel {
             $errors[] = 'Ei saa olla tyhjä!';
         }
         if (strlen($string) < $length) {
-            $errors[] = 'Pituuden tulee olla vähintään ' + $length + ' merkkiä!';
+            $errors[] = 'Pituuden tulee olla vähintään ' . $length . ' merkkiä!';
         }
 
         return $errors;
     }
-    
-        public function validate_string_maximum_length($string, $length) {
+
+    public function validate_string_maximum_length($string, $length) {
         $errors = array();
-        
+
         if (strlen($string) > $length) {
-            $errors[] = 'Pituus saa olla korkeintaan ' + $length + ' merkkiä!';
+            $errors[] = 'Pituus saa olla korkeintaan ' . $length . ' merkkiä!';
         }
 
         return $errors;
