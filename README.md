@@ -29,9 +29,8 @@ Yleisiä linkkejä:
 
 [Linkki äänestysjärjestelmän aihekuvaukseen](http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Aanestys.html) 
 
-## Työn aihe
+## Puutteita toistaiseksi:
 
-Puutteita toistaiseksi:
 * Anonyymisessiot
 * Tulosten kolme muotoa: Nykyinen kärki, Kaikki äänimäärät, Ei julkinen
 * Aktiviteettiraportti äänestyksen jälkeen
