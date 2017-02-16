@@ -41,6 +41,10 @@
                         <!-- Navigaation linkit -->
                         <li><a href="{{base_path}}">Etusivu</a></li>
                         <li><a href="{{base_path}}/vote/list">Äänestykset</a></li>
+<!--                        Onnistuuko???
+                        {% if user_logged_in %}
+                            <li><a href="{{base_path}}/candidate/show/{{get_user_logged_in_id}}">Oma sivu</a></li>
+                        {% endif %}-->
                     </ul>
                     {% if user_logged_in %}
                     <form class="navbar-form navbar-right" method="post" action="{{base_path}}/user/logout">

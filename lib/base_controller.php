@@ -15,7 +15,7 @@ class BaseController {
         // Käyttäjä ei ole kirjautunut sisään
         return null;
     }
-
+    
     public static function check_logged_in() {
         // Jos käyttäjä ei ole kirjautunut sisään, ohjaa hänet toiselle sivulle (esim. kirjautumissivulle).
         if (!isset($_SESSION['user'])) {
