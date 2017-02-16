@@ -1,7 +1,6 @@
 # Tietokantasovelluksen esittelysivu
 
-16.2.2017: Voit äänestää. Rekisteröidy tai käytä esim. Käyttäjätunnus: Armas salasana: hella
-           Linkit näkymiin ovat vanhentuneita. Osa toimii, osa ei. Käytä mieluummin sovellusta.
+16.2.2017: Voit äänestää. Rekisteröidy tai käytä esim. **Käyttäjätunnus: Armas salasana: hella** HUOM: Linkit näkymiin ovat vanhentuneita. Osa toimii, osa ei. Käytä mieluummin sovellusta.
 
 2.2.2017: Äänestyslistalla näkyy nyt lisätyt äänestykset. Painamalla "Aloita uusi äänestys" nappulaa voi nyt luoda uuden äänestyksen. Klikkaamalla listalla olevaa äänestystä voi tarkastella sen esittelynäkymää.
 
