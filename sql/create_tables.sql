@@ -1,35 +1,34 @@
 CREATE TABLE Kayttaja(
-  id SERIAL PRIMARY KEY, -- SERIAL tyyppinen pääavain pitää huolen, että tauluun lisätyllä rivillä on aina uniikki pääavain. Kätevää!
-  nimi varchar(100) NOT NULL, -- Muista erottaa sarakkeiden määrittelyt pilkulla!
+  id SERIAL PRIMARY KEY,
+  nimi varchar(100) NOT NULL,
   tiedot varchar(1000),
   salasana varchar(100) NOT NULL
 );
 
 CREATE TABLE Aanestys(
-  id SERIAL PRIMARY KEY, -- SERIAL tyyppinen pääavain pitää huolen, että tauluun lisätyllä rivillä on aina uniikki pääavain. Kätevää!
-  nimi varchar(100) NOT NULL, -- Muista erottaa sarakkeiden määrittelyt pilkulla!
-  jarjestaja_id INTEGER REFERENCES Kayttaja(id),
+  id SERIAL PRIMARY KEY,
+  nimi varchar(100) NOT NULL,
+  jarjestaja_id INTEGER REFERENCES Kayttaja(id) ON DELETE CASCADE,
   lisatieto varchar(1000),
   alkamisaika DATE NOT NULL,
   loppumisaika DATE,
-  anonyymi BOOLEAN TRUE
+  anonyymi BOOLEAN
 );
 
 CREATE TABLE Aanestajalista(
-  kayttaja_id INTEGER REFERENCES Kayttaja(id),
-  aanestys_id INTEGER REFERENCES Aanestys(id)
+  kayttaja_id INTEGER REFERENCES Kayttaja(id) ON DELETE CASCADE,
+  aanestys_id INTEGER REFERENCES Aanestys(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Ehdokas(
   id SERIAL PRIMARY KEY,
   nimi varchar(100) NOT NULL,
   lisatieto varchar(1000),
-  aanestys_id INTEGER REFERENCES Aanestys(id)
+  aanestys_id INTEGER REFERENCES Aanestys(id) ON DELETE CASCADE
 );
 
 CREATE TABLE Aani(
   id SERIAL PRIMARY KEY,
-  ehdokas_id INTEGER REFERENCES Ehdokas(id),
-  aanestys_id INTEGER REFERENCES Aanestys(id),
-  aika TIMESTAMP NOW()
+  ehdokas_id INTEGER REFERENCES Ehdokas(id) ON DELETE CASCADE,
+  aika TIMESTAMP
 );

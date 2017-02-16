@@ -69,7 +69,26 @@ class Aanestys extends BaseModel {
 
         return null;
     }
-    
+
+    public static function findEhdokkaat($id) {
+        $query = DB::connection()->prepare('SELECT * FROM Ehdokas WHERE Ehdokas.aanestys_id = :id');
+        $query->execute(array('id' => $id));
+
+        $rows = $query->fetchAll();
+        $ehdokkaat = array();
+
+        foreach ($rows as $row) {
+            $ehdokkaat[] = new Ehdokas(array(
+                'id' => $row['id'],
+                'nimi' => $row['nimi'],
+                'lisatieto' => $row['lisatieto'],
+                'aanestys_id' => $row['aanestys_id']
+            ));
+        }
+
+        return $ehdokkaat;
+    }
+
     public static function anonyymi($id) {
         $aanestys = self::find($id);
         if ($aanestys->anonyymi) {
@@ -109,16 +128,29 @@ class Aanestys extends BaseModel {
     }
 
     public function validate_alkamisaika() {
-        return self::validate_date($this->alkamisaika);
+        $errors = array();
+        $errors = array_merge($errors, self::validate_date($this->alkamisaika));
+//        if (strtotime($this->alkamisaika) < strtotime(date("Y-m-d"))) {
+//            $errors[] = 'Äänestys voi alkaa aikaisintaan tänään!';
+//        }
+        return $errors;
     }
 
     public function validate_loppumisaika() {
-        return self::validate_date($this->loppumisaika);
+        $errors = array();
+        $errors = array_merge($errors, self::validate_date($this->loppumisaika));
+        if (strtotime($this->loppumisaika) < strtotime($this->alkamisaika)) {
+            $errors[] = 'Äänestys ei voi loppua ennen alkamista!';
+        }
+        if (strtotime($this->loppumisaika) < strtotime(date("Y-m-d"))) {
+            $errors[] = 'Äänestys ei voi olla päättynyt vielä!';
+        }
+        return $errors;
     }
 
     public function validate_date($date) {
         $errors = array();
-        
+
         if ($date == '') {
             $errors[] = 'Päivämäärä täytyy päättää';
         }
@@ -128,7 +160,15 @@ class Aanestys extends BaseModel {
             $errors[] = 'Päivämäärä täytyy päättää!';
         }
 
+        //Tämä estää asdfghjkl syötteet, mutta estää myös chromen päivämääräavustuksen toiminnan
+//        if (preg_match("/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-])$/", $date, $matches)) {
+//            if (checkdate($matches[2], $matches[3], $matches[1])) {
+//                return $errors;
+//            }
+//        } else {
+//            $errors[] = 'Päivämäärä täytyy päättää!';
+//        }
         return $errors;
     }
-    
+
 }

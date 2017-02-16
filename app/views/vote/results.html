@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Äänestyksen {{aanestys.nimi}} tulokset</h1>
+
+{% if message %}
+<div class="alert alert-danger">
+<ul><li>{{message}}</li></ul>
+</div>
+{% endif %}
+
+<p>
+    {{aanestys.lisatieto}}
+</p>
+
+<p>
+    <a href="{{base_path}}/vote/show/{{aanestys.id}}" class="btn btn-primary">Takaisin äänestyssivulle</a> 
+</p>
+
+<ul>
+    <li><strong>Järjestäjä:</strong> <a href="{{base_path}}/user/show/{{aanestys.jarjestaja_id}}">{{aanestys.find_jarjestaja(aanestys.id)}}</a></li>
+    <li><strong>Alkamisaika:</strong> {{aanestys.alkamisaika}}</li>
+    <li><strong>Päättymisaika:</strong> {{aanestys.loppumisaika}}</li>
+</ul>
+<h3>Lista ehdokkaista</h3>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Nimi</th>
+            <th>Lisätieto</th>
+            <th>Äänimäärä</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for ehdokas in aanestys.findEhdokkaat(aanestys.id) %}
+        <tr>
+            <td><a href="{{base_path}}/candidate/show/{{ehdokas.id}}">{{ehdokas.nimi}}</a></td>
+            <td>{{ehdokas.lisatieto}}</td>
+            <td>{{ehdokas.findAanimaara(ehdokas.id)}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

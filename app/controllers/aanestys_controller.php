@@ -9,10 +9,16 @@ class AanestysController extends BaseController {
 
     public function show($id) {
         $aanestys = Aanestys::find($id);
-        View::make('vote/show.html', array('aanestys' => $aanestys)); //voiko olla käyttämättä array
+        View::make('vote/show.html', array('aanestys' => $aanestys));
+    }
+
+    public function results($id) {
+        $aanestys = Aanestys::find($id);
+        View::make('vote/results.html', array('aanestys' => $aanestys));
     }
 
     public function newVote() {
+        self::check_logged_in();
         View::make('vote/new.html');
     }
 
@@ -35,7 +41,7 @@ class AanestysController extends BaseController {
         if (count($errors) == 0) {
             $aanestys->save();
 
-            Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Äänestys on aloitettu!'));
+            Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Äänestys on luotu!'));
         } else {
             View::make('vote/new.html', array('errors' => $errors, 'aanestys' => $aanestys));
         }

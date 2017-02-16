@@ -9,15 +9,36 @@ $routes->get('/', function() {
 });
 
 $routes->get('/hiekkalaatikko', function() {
-    HelloWorldController::sandbox();
+    HelloWorldController::hiekka();
 });
 
-$routes->get('/candidate/edit', function() {
-    HelloWorldController::candidateEdit();
+$routes->get('/candidate/edit/:id', function($id) {
+    EhdokasController::edit($id);
 });
 
-$routes->get('/candidate/show', function() {
-    HelloWorldController::candidateShow();
+$routes->post('/candidate/edit/:id', function($id) {
+    EhdokasController::update($id);
+});
+
+$routes->get('/candidate/destroy/:id', function($id) {
+    EhdokasController::destroy($id);
+});
+
+$routes->get('/candidate/vote/:id', function($id) {
+    EhdokasController::vote($id);
+});
+
+
+$routes->get('/candidate/show/:id', function($id) {
+    EhdokasController::show($id);
+});
+
+$routes->post('/candidate/new/:id', function($id) {
+    EhdokasController::store($id);
+});
+
+$routes->get('/candidate/new/:id', function($id) { //äänestyksen id
+    EhdokasController::newCandidate($id);
 });
 
 $routes->get('/user/edit/:id', 'check_logged_in', function($id) {
@@ -28,7 +49,7 @@ $routes->post('/user/edit/:id', function($id) {
     KayttajaController::update($id);
 });
 
-$routes->get('/user/show', function() {
+$routes->get('/user/show', function() { //ei tarvetta
     HelloWorldController::userShow();
 });
 
@@ -94,4 +115,8 @@ $routes->get('/vote/delete/:id', function($id) {
 
 $routes->post('/vote/delete/:id', function($id) {
     AanestysController::destroy($id);
+});
+
+$routes->get('/vote/results/:id', function($id) {
+    AanestysController::results($id);
 });

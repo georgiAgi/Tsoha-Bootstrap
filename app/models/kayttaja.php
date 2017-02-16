@@ -70,6 +70,41 @@ class Kayttaja extends BaseModel {
         return $aanestykset;
     }
 
+    public static function findAanestyksetJoihinVastattu($id) { //vain rek??
+        $query = DB::connection()->prepare('SELECT Aanestys.* FROM Aanestajalista, Aanestys WHERE Aanestajalista.kayttaja_id = :id AND Aanestys.id = Aanestajalista.aanestys_id');
+        $query->execute(array('id' => $id));
+
+        $rows = $query->fetchAll();
+        $aanestykset = array();
+
+        foreach ($rows as $row) {
+            $aanestykset[] = new Aanestys(array(
+                'id' => $row['id'],
+                'nimi' => $row['nimi'],
+                'jarjestaja_id' => $row['jarjestaja_id'],
+                'lisatieto' => $row['lisatieto'],
+                'alkamisaika' => $row['alkamisaika'],
+                'loppumisaika' => $row['loppumisaika'],
+                'anonyymi' => $row['anonyymi'],
+            ));
+        }
+
+        return $aanestykset;
+    }
+
+    public static function findOnkoAanestanyt($kayttaja_id, $aanestys_id) {
+        $query = DB::connection()->prepare('SELECT * FROM Aanestajalista WHERE kayttaja_id = :kayttaja_id AND aanestys_id = :aanestys_id');
+        $query->execute(array('kayttaja_id' => $kayttaja_id, 'aanestys_id' => $aanestys_id));
+
+        $rows = $query->fetchAll();
+
+        if ($rows) {
+            return TRUE;
+        }
+
+        return FALSE;
+    }
+
     public static function findByName($nimi) {
         $query = DB::connection()->prepare('SELECT * FROM Kayttaja WHERE nimi = :nimi LIMIT 1');
         $query->execute(array('nimi' => $nimi));
@@ -93,6 +128,11 @@ class Kayttaja extends BaseModel {
         $query->execute(array('nimi' => $this->nimi, 'tiedot' => $this->tiedot, 'salasana' => $this->salasana));
         $row = $query->fetch();
         $this->id = $row['id'];
+    }
+
+    public function vote($kayttaja_id, $aanestys_id) {
+        $query = DB::connection()->prepare('INSERT INTO Aanestajalista (kayttaja_id, aanestys_id) VALUES (:kayttaja_id, :aanestys_id)');
+        $query->execute(array('kayttaja_id' => $kayttaja_id, 'aanestys_id' => $aanestys_id));
     }
 
     public static function authenticate($nimi, $salasana) {

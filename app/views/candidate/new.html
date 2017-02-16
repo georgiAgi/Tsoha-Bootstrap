@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Aseta uusi ehdokas {{aanestys.nimi}} -äänestykseen</h1>
+
+{% if errors %}
+<div class="alert alert-danger">
+
+    {% for error in errors %}
+    <ul>
+        <li>{{error}}</li>
+    </ul>
+    {% endfor %}
+
+</div>
+{% endif %}
+
+<form method="post" action="{{base_path}}/candidate/new/{{aanestys.id}}">
+    <div class="form-group">
+        <label>Nimi</label>
+        <input type="text" name="nimi" class="form-control" value={{ehdokas.nimi}}>
+    </div>
+    
+    <div class="form-group">
+        <label>Kuvaus</label>
+        <textarea name="lisatieto" class="form-control">{{ehdokas.lisatieto}}</textarea>
+    </div>
+    
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Lisää ehdokas</button>
+    </div>
+</form>
+{% endblock %}

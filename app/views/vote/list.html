@@ -40,7 +40,7 @@
             <td>{{aanestys.loppumisaika}}</td>
             <td><a href="{{base_path}}/user/show/{{aanestys.jarjestaja_id}}">{{aanestys.find_jarjestaja(aanestys.id)}}</a></td>
             <td>{{aanestys.anonyymi(aanestys.id)}}</td>
-            <th><a class="btn btn-default btn-sm" href="#">Tuloksiin</a></th>
+            <th><a class="btn btn-default btn-sm" href="{{base_path}}/vote/results/{{aanestys.id}}">Tuloksiin</a></th>
         </tr>
         {% endfor %}
     </tbody>

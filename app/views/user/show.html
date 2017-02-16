@@ -37,4 +37,29 @@
     </tbody>
 </table>
 
+<h3>Lista rekisteröityneiden käyttäjien äänestyksistä, joihin käyttäjä on vastannut</h3>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Nimi</th>
+            <th>Alkamisaika</th>
+            <th>Päättymisaika</th>
+            <th>Järjestäjä</th>
+            <th>Tulokset</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for aanestys in kayttaja.findAanestyksetJoihinVastattu(kayttaja.id) %}
+        <tr>
+            <td><a href="{{base_path}}/vote/show/{{aanestys.id}}">{{aanestys.nimi}}</a></td>
+            <td>{{aanestys.alkamisaika}}</td>
+            <td>{{aanestys.loppumisaika}}</td>
+            <td><a href="{{base_path}}/user/show/{{aanestys.jarjestaja_id}}">{{aanestys.find_jarjestaja(aanestys.id)}}</a></td>
+            <th><a class="btn btn-default btn-sm" href="{{base_path}}/vote/results/{{aanestys.id}}">Tuloksiin</a></th>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 {% endblock %}

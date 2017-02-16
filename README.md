@@ -1,7 +1,7 @@
-# Käynnistys- / käyttöohje
-Mene [tähän](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/) osoitteeseen käyttääksesi äänestysjärjestelmää. Kirjaudu sisään käyttäjänimellä "Armas" ja salasanalla "hella". Pystyt tällä hetkellä selaamaan äänestyksiä, luomaan uuden äänestyksen sekä muokkaamaan ja poistamaan olemassaolevan äänestyksen.
-
 # Tietokantasovelluksen esittelysivu
+
+16.2.2017: Voit äänestää. Rekisteröidy tai käytä esim. Käyttäjätunnus: Armas salasana: hella
+           Linkit näkymiin ovat vanhentuneita. Osa toimii, osa ei. Käytä mieluummin sovellusta.
 
 2.2.2017: Äänestyslistalla näkyy nyt lisätyt äänestykset. Painamalla "Aloita uusi äänestys" nappulaa voi nyt luoda uuden äänestyksen. Klikkaamalla listalla olevaa äänestystä voi tarkastella sen esittelynäkymää.
 
