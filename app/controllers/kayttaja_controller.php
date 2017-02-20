@@ -85,4 +85,21 @@ class KayttajaController extends BaseController {
             Redirect::to('/user/show/' . $kayttaja->id, array('message' => 'Käyttäjää on muokattu onnistuneesti!'));
         }
     }
+
+    public static function destroy($id) {
+        $kayttaja = new Kayttaja(array('id' => $id));
+        $kayttaja->destroy();
+
+        Redirect::to('/', array('message' => 'Käyttäjä on poistettu onnistuneesti!'));
+    }
+
+    public function delete($id) {
+        $kayttaja = Kayttaja::find($id);
+        $user = self::get_user_logged_in();
+        if ($user->id == $kayttaja->id) {
+            View::make('user/delete.html', array('kayttaja' => $kayttaja));
+        }
+        Redirect::to('/user/show/' . $kayttaja->id, array('message' => 'Vain Käyttäjä voi poistaa omat tunnukset!'));
+    }
+
 }

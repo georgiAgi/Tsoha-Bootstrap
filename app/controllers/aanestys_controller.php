@@ -13,8 +13,12 @@ class AanestysController extends BaseController {
     }
 
     public function results($id) {
+        $user = self::get_user_logged_in();
         $aanestys = Aanestys::find($id);
-        View::make('vote/results.html', array('aanestys' => $aanestys));
+        if ($aanestys->jarjestaja_id == $user->id) {
+            View::make('vote/results.html', array('aanestys' => $aanestys));
+        }
+        self::publicResults($id);
     }
 
     public function newVote() {
@@ -33,6 +37,7 @@ class AanestysController extends BaseController {
             'alkamisaika' => $params['alkamisaika'],
             'loppumisaika' => $params['loppumisaika'],
             'anonyymi' => $params['anonyymi'],
+            'julkisettulokset' => $params['julkisettulokset'],
             'jarjestaja_id' => $jarjestaja->id
         ));
         // Kutsutaan alustamamme olion save metodia, joka tallentaa olion tietokantaan
@@ -65,7 +70,8 @@ class AanestysController extends BaseController {
             'lisatieto' => $params['lisatieto'],
             'alkamisaika' => $params['alkamisaika'],
             'loppumisaika' => $params['loppumisaika'],
-            'anonyymi' => $params['anonyymi']
+            'anonyymi' => $params['anonyymi'],
+            'julkisettulokset' => $params['julkisettulokset']
         );
 
         $aanestys = new Aanestys($attributes);
@@ -96,6 +102,16 @@ class AanestysController extends BaseController {
             View::make('vote/delete.html', array('aanestys' => $aanestys));
         }
         Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Vain järjestäjä voi poistaa äänestyksen!'));
+    }
+
+    public function publicResults($id) {
+        $aanestys = Aanestys::find($id);
+        if ($aanestys->julkisettulokset == 1) {
+            View::make('vote/topcandidates.html', array('aanestys' => $aanestys));
+        } elseif ($aanestys->julkisettulokset == 2) {
+            View::make('vote/candidatescores.html', array('aanestys' => $aanestys));
+        }
+         Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Tuloksia ei saatavilla.'));
     }
 
 }

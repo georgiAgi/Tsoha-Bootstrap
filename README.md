@@ -32,8 +32,5 @@ Yleisiä linkkejä:
 ## Puutteita toistaiseksi:
 
 * Anonyymisessiot
-* Tulosten kolme muotoa: Nykyinen kärki, Kaikki äänimäärät, Ei julkinen
 * Aktiviteettiraportti äänestyksen jälkeen
-* Äänestysraportti äänestyksen aikana ja sen jälkeen
 * Oma sivu base-banneriin, onnistuuko??
-* Käyttäjän poisto

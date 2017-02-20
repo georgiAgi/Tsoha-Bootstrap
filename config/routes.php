@@ -49,6 +49,14 @@ $routes->post('/user/edit/:id', function($id) {
     KayttajaController::update($id);
 });
 
+$routes->get('/user/delete/:id', 'check_logged_in', function($id) {
+    KayttajaController::delete($id);
+});
+
+$routes->post('/user/delete/:id', function($id) {
+    KayttajaController::destroy($id);
+});
+
 $routes->get('/user/show', function() { //ei tarvetta
     HelloWorldController::userShow();
 });
@@ -117,6 +125,10 @@ $routes->post('/vote/delete/:id', function($id) {
     AanestysController::destroy($id);
 });
 
-$routes->get('/vote/results/:id', function($id) {
+$routes->get('/vote/results/:id', 'check_logged_in', function($id) {
     AanestysController::results($id);
+});
+
+$routes->get('/vote/publicresults/:id', function($id) {
+    AanestysController::publicResults($id);
 });

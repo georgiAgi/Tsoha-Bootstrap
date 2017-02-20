@@ -2,7 +2,7 @@
 
 class Aanestys extends BaseModel {
 
-    public $id, $nimi, $jarjestaja_id, $lisatieto, $alkamisaika, $loppumisaika, $anonyymi;
+    public $id, $nimi, $jarjestaja_id, $lisatieto, $alkamisaika, $loppumisaika, $anonyymi, $julkisettulokset;
 
     public function __construct($attributes) {
         parent::__construct($attributes);
@@ -28,6 +28,7 @@ class Aanestys extends BaseModel {
                 'alkamisaika' => $row['alkamisaika'],
                 'loppumisaika' => $row['loppumisaika'],
                 'anonyymi' => $row['anonyymi'],
+                'julkisettulokset' => $row['julkisettulokset']
             ));
         }
 
@@ -48,6 +49,7 @@ class Aanestys extends BaseModel {
                 'alkamisaika' => $row['alkamisaika'],
                 'loppumisaika' => $row['loppumisaika'],
                 'anonyymi' => $row['anonyymi'],
+                'julkisettulokset' => $row['julkisettulokset']
             ));
 
             return $aanestys;
@@ -89,6 +91,72 @@ class Aanestys extends BaseModel {
         return $ehdokkaat;
     }
 
+    public static function findAndSortEhdokkaat($id) {
+        $query = DB::connection()->prepare('SELECT ehdokas.*, COUNT(aani.id) AS aanimaara
+    FROM ehdokas LEFT JOIN aani 
+    ON ehdokas.id = aani.ehdokas_id
+    WHERE ehdokas.aanestys_id = :id
+    GROUP BY ehdokas.nimi, ehdokas.lisatieto, ehdokas.id, ehdokas.aanestys_id
+    ORDER BY aanimaara DESC');
+        $query->execute(array('id' => $id));
+
+        $rows = $query->fetchAll();
+        $ehdokkaat = array();
+
+        foreach ($rows as $row) {
+            $ehdokkaat[] = new Ehdokas(array(
+                'id' => $row['id'],
+                'nimi' => $row['nimi'],
+                'lisatieto' => $row['lisatieto'],
+                'aanestys_id' => $row['aanestys_id']
+            ));
+        }
+
+        return $ehdokkaat;
+    }
+
+    public static function findTop5Ehdokkaat($id) {
+        $query = DB::connection()->prepare('SELECT ehdokas.nimi, ehdokas.lisatieto, ehdokas.id, COUNT(aani.id) AS aanimaara
+    FROM ehdokas LEFT JOIN aani 
+    ON ehdokas.id = aani.ehdokas_id
+    WHERE ehdokas.aanestys_id = :id
+    GROUP BY ehdokas.nimi, ehdokas.lisatieto, ehdokas.id
+    ORDER BY aanimaara DESC
+    LIMIT 5');
+        $query->execute(array('id' => $id));
+
+        $rows = $query->fetchAll();
+        $ehdokkaat = array();
+
+        foreach ($rows as $row) {
+            $ehdokkaat[] = new Ehdokas(array(
+                'id' => $row['id'],
+                'nimi' => $row['nimi'],
+                'lisatieto' => $row['lisatieto']
+            ));
+        }
+
+        return $ehdokkaat;
+    }
+
+    public static function findVastanneetKayttajat($id) { //vain rek??
+        $query = DB::connection()->prepare('SELECT Kayttaja.* FROM Aanestajalista, Kayttaja WHERE Aanestajalista.aanestys_id = :id AND Kayttaja.id = Aanestajalista.kayttaja_id');
+        $query->execute(array('id' => $id));
+
+        $rows = $query->fetchAll();
+        $kayttajat = array();
+
+        foreach ($rows as $row) {
+            $kayttajat[] = new Kayttaja(array(
+                'id' => $row['id'],
+                'nimi' => $row['nimi'],
+                'tiedot' => $row['tiedot'],
+            ));
+        }
+
+        return $kayttajat;
+    }
+
     public static function anonyymi($id) {
         $aanestys = self::find($id);
         if ($aanestys->anonyymi) {
@@ -98,15 +166,15 @@ class Aanestys extends BaseModel {
     }
 
     public function save() {
-        $query = DB::connection()->prepare('INSERT INTO Aanestys (nimi, jarjestaja_id, lisatieto, alkamisaika, loppumisaika, anonyymi) VALUES (:nimi, :jarjestaja_id, :lisatieto, :alkamisaika, :loppumisaika, :anonyymi) RETURNING id');
-        $query->execute(array('nimi' => $this->nimi, 'jarjestaja_id' => $this->jarjestaja_id, 'lisatieto' => $this->lisatieto, 'alkamisaika' => $this->alkamisaika, 'loppumisaika' => $this->loppumisaika, 'anonyymi' => $this->anonyymi));
+        $query = DB::connection()->prepare('INSERT INTO Aanestys (nimi, jarjestaja_id, lisatieto, alkamisaika, loppumisaika, anonyymi, julkisettulokset) VALUES (:nimi, :jarjestaja_id, :lisatieto, :alkamisaika, :loppumisaika, :anonyymi, :julkisettulokset) RETURNING id');
+        $query->execute(array('nimi' => $this->nimi, 'jarjestaja_id' => $this->jarjestaja_id, 'lisatieto' => $this->lisatieto, 'alkamisaika' => $this->alkamisaika, 'loppumisaika' => $this->loppumisaika, 'anonyymi' => $this->anonyymi, 'julkisettulokset' => $this->julkisettulokset));
         $row = $query->fetch();
         $this->id = $row['id'];
     }
 
     public function update() {
-        $query = DB::connection()->prepare('UPDATE Aanestys SET nimi = :nimi, lisatieto = :lisatieto, alkamisaika = :alkamisaika, loppumisaika = :loppumisaika, anonyymi = :anonyymi WHERE id = :id');
-        $query->execute(array('nimi' => $this->nimi, 'lisatieto' => $this->lisatieto, 'alkamisaika' => $this->alkamisaika, 'loppumisaika' => $this->loppumisaika, 'anonyymi' => $this->anonyymi, 'id' => $this->id));
+        $query = DB::connection()->prepare('UPDATE Aanestys SET nimi = :nimi, lisatieto = :lisatieto, alkamisaika = :alkamisaika, loppumisaika = :loppumisaika, anonyymi = :anonyymi, julkisettulokset = :julkisettulokset WHERE id = :id');
+        $query->execute(array('nimi' => $this->nimi, 'lisatieto' => $this->lisatieto, 'alkamisaika' => $this->alkamisaika, 'loppumisaika' => $this->loppumisaika, 'anonyymi' => $this->anonyymi, 'julkisettulokset' => $this->julkisettulokset, 'id' => $this->id));
     }
 
     public function destroy() {

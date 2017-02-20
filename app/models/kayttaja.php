@@ -64,6 +64,7 @@ class Kayttaja extends BaseModel {
                 'alkamisaika' => $row['alkamisaika'],
                 'loppumisaika' => $row['loppumisaika'],
                 'anonyymi' => $row['anonyymi'],
+                'julkisettulokset' => $row['julkisettulokset']
             ));
         }
 
@@ -86,6 +87,7 @@ class Kayttaja extends BaseModel {
                 'alkamisaika' => $row['alkamisaika'],
                 'loppumisaika' => $row['loppumisaika'],
                 'anonyymi' => $row['anonyymi'],
+                'julkisettulokset' => $row['julkisettulokset']
             ));
         }
 
@@ -169,6 +171,11 @@ class Kayttaja extends BaseModel {
         $errors = array();
         $errors = array_merge($errors, $this->validate_string_maximum_length($this->tiedot, 1000));
         return $errors;
+    }
+
+    public function destroy() {
+        $query = DB::connection()->prepare('DELETE FROM Kayttaja WHERE id = :id');
+        $query->execute(array('id' => $this->id));
     }
 
 }

@@ -21,7 +21,7 @@
     <li><strong>Alkamisaika:</strong> {{aanestys.alkamisaika}}</li>
     <li><strong>Päättymisaika:</strong> {{aanestys.loppumisaika}}</li>
 </ul>
-<h3>Lista ehdokkaista</h3>
+<h3>Ehdokkaat ja äänimäärät</h3>
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
@@ -32,7 +32,7 @@
     </thead>
 
     <tbody>
-        {% for ehdokas in aanestys.findAndSortEhdokkaat(aanestys.id) %}
+        {% for ehdokas in aanestys.findEhdokkaat(aanestys.id) %}
         <tr>
             <td><a href="{{base_path}}/candidate/show/{{ehdokas.id}}">{{ehdokas.nimi}}</a></td>
             <td>{{ehdokas.lisatieto}}</td>
@@ -41,26 +41,5 @@
         {% endfor %}
     </tbody>
 </table>
-
-{% if aanestys.anonyymi == false %}
-<h3>Lista äänestäjistä</h3>
-<table class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th>Nimi</th>
-            <th>Tiedot</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        {% for kayttaja in aanestys.findVastanneetKayttajat(aanestys.id) %}
-        <tr>
-            <td><a href="{{base_path}}/user/show/{{kayttaja.id}}">{{kayttaja.nimi}}</a></td>
-            <td>{{kayttaja.tiedot}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{% endif %}
 
 {% endblock %}

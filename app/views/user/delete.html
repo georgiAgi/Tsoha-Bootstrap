@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{kayttaja.nimi}}, haluatko varmasti poistaa käyttäjätilisi?</h1>
+<form method="post" action="{{base_path}}/user/delete/{{kayttaja.id}}">
+    <p>
+        <a href="{{base_path}}/user/edit/{{kayttaja.id}}"  class="btn btn-default">En</a> 
+    </p>
+    <div class="form-group">
+        <button type="submit" class="btn btn-danger">Poista</button>
+    </div>
+    <p>
+        {{kayttaja.tiedot}}
+    </p>
+</form>
+{% endblock %}
