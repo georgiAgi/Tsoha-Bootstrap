@@ -12,7 +12,7 @@ $routes->get('/hiekkalaatikko', function() {
     HelloWorldController::hiekka();
 });
 
-$routes->get('/candidate/edit/:id', function($id) {
+$routes->get('/candidate/edit/:id', 'check_logged_in', function($id) {
     EhdokasController::edit($id);
 });
 
@@ -20,7 +20,7 @@ $routes->post('/candidate/edit/:id', function($id) {
     EhdokasController::update($id);
 });
 
-$routes->get('/candidate/destroy/:id', function($id) {
+$routes->get('/candidate/destroy/:id', 'check_logged_in', function($id) {
     EhdokasController::destroy($id);
 });
 
