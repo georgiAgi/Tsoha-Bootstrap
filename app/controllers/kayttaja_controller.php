@@ -50,11 +50,16 @@ class KayttajaController extends BaseController {
             View::make('user/register.html', array('error' => 'Käyttäjänimi on jo käytössä!'));
         }
 
-        $kayttaja->save();
+        $errors = $kayttaja->errors();
+        if (count($errors) > 0) {
+            View::make('user/register.html', array('errors' => $errors));
+        } else {
+            $kayttaja->save();
 
-        $_SESSION['user'] = $kayttaja->id;
+            $_SESSION['user'] = $kayttaja->id;
 
-        Redirect::to('/vote/list', array('message' => 'Tervetuloa ' . $kayttaja->nimi . '!'));
+            Redirect::to('/vote/list', array('message' => 'Tervetuloa ' . $kayttaja->nimi . '!'));
+        }
     }
 
     public static function edit($id) {
@@ -71,12 +76,24 @@ class KayttajaController extends BaseController {
         $attributes = array(
             'id' => $id,
             'nimi' => $params['nimi'],
-            'tiedot' => $params['tiedot']
+            'tiedot' => $params['tiedot'],
+            'salasana' => $params['salasana']
         );
 
         $kayttaja = new Kayttaja($attributes);
 
         $errors = $kayttaja->errors();
+
+        if ($params['salasana'] !== $params['salasananVarmennus']) {
+            $errors[] = 'Salasanojen täytyy olla samat!';
+        }
+
+        $samanniminenKayttaja = $kayttaja->findByName($params['nimi']);
+        if ($samanniminenKayttaja != null) {
+            if ($samanniminenKayttaja->id != $id) {
+                $errors[] = 'Samanniminen käyttäjä on jo olemassa!';
+            }
+        }
         if (count($errors) > 0) {
             View::make('user/edit.html', array('kayttaja' => $attributes, 'errors' => $errors));
         } else {

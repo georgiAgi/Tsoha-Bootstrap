@@ -11,20 +11,6 @@ Yleisiä linkkejä:
 * [Linkki sovellukseeni](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/)
 * [Linkki dokumentaatiooni](https://github.com/georgiAgi/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
 
-[Linkki äänestyslistaan](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/vote/list) 
-
-[Linkki äänestysnäkymään](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/vote/show) 
-
-[Linkki äänestyksen muokkaukseen](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/vote/edit) 
-
-[Linkki ehdokasnäkymään](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/candidate/show) 
-
-[Linkki ehdokkaan muokkaukseen](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/candidate/edit)
-
-[Linkki käyttäjänäkymään](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/user/show)
-
-[Linkki käyttäjän muokkaukseen](http://gexgex.users.cs.helsinki.fi/aanestysjarjestelma/user/edit) 
-
 ## Työn aihe
 
 [Linkki äänestysjärjestelmän aihekuvaukseen](http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Aanestys.html) 
@@ -33,4 +19,3 @@ Yleisiä linkkejä:
 
 * Anonyymisessiot
 * Aktiviteettiraportti äänestyksen jälkeen
-* Oma sivu base-banneriin, onnistuuko??

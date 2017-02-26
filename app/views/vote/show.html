@@ -36,7 +36,11 @@
         <tr>
             <td><a href="{{base_path}}/candidate/show/{{ehdokas.id}}">{{ehdokas.nimi}}</a></td>
             <td>{{ehdokas.lisatieto}}</td>
+            {% if error %}
+            <th><button disabled="">{{error}}</button></th>
+            {% else %}
             <th><a class="btn btn-success btn-sm" href="{{base_path}}/candidate/vote/{{ehdokas.id}}">Äänestä</a></th>
+            {% endif %}
         </tr>
         {% endfor %}
     </tbody>

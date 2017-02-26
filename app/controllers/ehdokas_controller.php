@@ -4,7 +4,11 @@ class EhdokasController extends BaseController {
 
     public static function newCandidate($id) {
         $aanestys = Aanestys::find($id);
-        View::make('candidate/new.html', array('aanestys' => $aanestys));
+        $kayttaja = self::get_user_logged_in();
+        if ($kayttaja->id == $aanestys->jarjestaja_id) {
+            View::make('candidate/new.html', array('aanestys' => $aanestys));
+        }
+        Redirect::to('/vote/show/' . $id, array('message' => 'Vain äänestyksen järjestäjä voi lisätä ehdokkaita!'));
     }
 
     public static function show($id) {
@@ -33,6 +37,10 @@ class EhdokasController extends BaseController {
 
         $errors = $ehdokas->errors();
 
+        if ($ehdokas->findByName($params['nimi'], $aanestysID) != null) {
+            $errors[] = 'Samanniminen ehdokas on jo tässä äänestyksessä!';
+        }
+
         if (count($errors) == 0) {
             $ehdokas->save();
 
@@ -55,9 +63,15 @@ class EhdokasController extends BaseController {
         $ehdokas = new Ehdokas($attributes);
 
         $errors = $ehdokas->errors();
+
+        $samanniminenEhdokas = $ehdokas->findByName($params['nimi'], $ehdokas->find($id)->aanestys_id);
+        if ($samanniminenEhdokas != null) {
+            if ($samanniminenEhdokas->id != $id) {
+                $errors[] = 'Samanniminen ehdokas on jo luotu!';
+            }
+        }
         if (count($errors) > 0) {
-            $aanestys = Aanestys::find($ehdokas->aanestys_id);
-            View::make('candidate/edit.html', array('aanestys' => $aanestys, 'errors' => $errors, 'ehdokas' => $ehdokas));
+            View::make('candidate/edit.html', array('errors' => $errors, 'ehdokas' => $ehdokas));
         } else {
             $ehdokas->update();
 
@@ -68,34 +82,43 @@ class EhdokasController extends BaseController {
     public function vote($id) {
         $ehdokas = Ehdokas::find($id);
         $aanestys = Aanestys::find($ehdokas->aanestys_id);
-        
+
+        self::voteTimeCheck($aanestys);
+
+        if ($aanestys->anonyymi == FALSE) {
+            self::check_logged_in();
+            $kayttaja = self::get_user_logged_in();
+
+            if ($kayttaja::findOnkoAanestanyt($kayttaja->id, $aanestys->id)) {
+                Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Olet jo äänestänyt!'));
+            }
+
+            $kayttaja::vote($kayttaja->id, $aanestys->id);
+        }
+
+        Aani::save($id);
+        View::make('/vote/show.html', array('aanestys' => $aanestys, 'message' => 'Äänestit onnistuneesti.', 'error' => 'Äänestit jo'));
+    }
+
+    public static function voteTimeCheck($aanestys) {
         if (strtotime($aanestys->alkamisaika) > strtotime(date("Y-m-d"))) {
             Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Äänestys ei ole vielä alkanut!'));
         } else if (strtotime($aanestys->loppumisaika) < strtotime(date("Y-m-d"))) {
             Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Äänestys on jo päättynyt!'));
         }
-               
-        if ($aanestys->anonyymi == FALSE) { //tähän vielä tarkistus, onko käyttäjä jo äänestänyt
-            self::check_logged_in();
-            $kayttaja = self::get_user_logged_in();
-            
-            if ($kayttaja::findOnkoAanestanyt($kayttaja->id, $aanestys->id)) {
-                Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Olet jo äänestänyt!'));
-            }
-            
-            $kayttaja::vote($kayttaja->id, $aanestys->id);
-        }
-        
-        Aani::save($id);
-        View::make('/vote/show.html', array('aanestys' => $aanestys, 'message' => 'Äänestit onnistuneesti.'));
+
+        return;
     }
 
     public static function destroy($id) {
         $ehdokas = Ehdokas::find($id);
         $aanestys = Aanestys::find($ehdokas->aanestys_id);
-        $ehdokas->destroy();
-        //Kun redirectaa, ei jostain syystä onnistu käyttämään äänestyksen metodeja, mutta saa kuitenkin oikean äänestyksen.
-        View::make('/vote/show.html', array('aanestys' => $aanestys, 'message' => 'Ehdokas on poistettu onnistuneesti!'));
+        $kayttaja = self::get_user_logged_in();
+        if ($kayttaja->id == $aanestys->jarjestaja_id) {
+            $ehdokas->destroy();
+            View::make('/vote/show.html', array('aanestys' => $aanestys, 'message' => 'Ehdokas on poistettu onnistuneesti!'));
+        } else {
+            Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Vain järjestäjä voi poistaa ehdokkaan!'));
+        }
     }
-
 }

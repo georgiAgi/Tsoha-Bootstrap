@@ -27,10 +27,8 @@ class AanestysController extends BaseController {
     }
 
     public static function store() {
-        // POST-pyynnön muuttujat sijaitsevat $_POST nimisessä assosiaatiolistassa
         $params = $_POST;
         $jarjestaja = self::get_user_logged_in();
-        // Alustetaan uusi Game-luokan olion käyttäjän syöttämillä arvoilla
         $aanestys = new Aanestys(array(
             'nimi' => $params['nimi'],
             'lisatieto' => $params['lisatieto'],
@@ -40,8 +38,12 @@ class AanestysController extends BaseController {
             'julkisettulokset' => $params['julkisettulokset'],
             'jarjestaja_id' => $jarjestaja->id
         ));
-        // Kutsutaan alustamamme olion save metodia, joka tallentaa olion tietokantaan
+        
         $errors = $aanestys->errors();
+
+        if ($aanestys->findByName($params['nimi']) != null) {
+            $errors[] = 'Samanniminen äänestys on jo luotu!';
+        }
 
         if (count($errors) == 0) {
             $aanestys->save();
@@ -77,6 +79,13 @@ class AanestysController extends BaseController {
         $aanestys = new Aanestys($attributes);
 
         $errors = $aanestys->errors();
+
+        $samanniminenAanestys = $aanestys->findByName($params['nimi']);
+        if ($samanniminenAanestys != null) {
+            if ($samanniminenAanestys->id != $id) {
+                $errors[] = 'Samanniminen äänestys on jo luotu!';
+            }
+        }
         if (count($errors) > 0) {
             View::make('vote/edit.html', array('aanestys' => $attributes, 'errors' => $errors));
         } else {
@@ -87,11 +96,9 @@ class AanestysController extends BaseController {
     }
 
     public static function destroy($id) {
-        $aanestys = new Aanestys(array('id' => $id));
-        // Kutsutaan Game-malliluokan metodia destroy, joka poistaa pelin sen id:llä
+        $aanestys = new Aanestys(array('id' => $id));        
         $aanestys->destroy();
 
-        // Ohjataan käyttäjä pelien listaussivulle ilmoituksen kera
         Redirect::to('/vote/list', array('message' => 'Äänestys on poistettu onnistuneesti!'));
     }
 
@@ -111,7 +118,7 @@ class AanestysController extends BaseController {
         } elseif ($aanestys->julkisettulokset == 2) {
             View::make('vote/candidatescores.html', array('aanestys' => $aanestys));
         }
-         Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Tuloksia ei saatavilla.'));
+        Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Tuloksia ei saatavilla.'));
     }
 
 }

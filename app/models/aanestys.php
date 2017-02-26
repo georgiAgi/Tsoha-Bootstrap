@@ -19,7 +19,6 @@ class Aanestys extends BaseModel {
 
 
         foreach ($rows as $row) {
-            // Tämä on PHP:n hassu syntaksi alkion lisäämiseksi taulukkoon :)
             $aanestykset[] = new Aanestys(array(
                 'id' => $row['id'],
                 'nimi' => $row['nimi'],
@@ -67,6 +66,29 @@ class Aanestys extends BaseModel {
             $jarjestaja = $row['nimi'];
 
             return $jarjestaja;
+        }
+
+        return null;
+    }
+
+    public static function findByName($nimi) {
+        $query = DB::connection()->prepare('SELECT * FROM Aanestys WHERE nimi = :nimi LIMIT 1');
+        $query->execute(array('nimi' => $nimi));
+        $row = $query->fetch();
+
+        if ($row) {
+            $aanestys = new Aanestys(array(
+                'id' => $row['id'],
+                'nimi' => $row['nimi'],
+                'jarjestaja_id' => $row['jarjestaja_id'],
+                'lisatieto' => $row['lisatieto'],
+                'alkamisaika' => $row['alkamisaika'],
+                'loppumisaika' => $row['loppumisaika'],
+                'anonyymi' => $row['anonyymi'],
+                'julkisettulokset' => $row['julkisettulokset']
+            ));
+
+            return $aanestys;
         }
 
         return null;
@@ -139,7 +161,7 @@ class Aanestys extends BaseModel {
         return $ehdokkaat;
     }
 
-    public static function findVastanneetKayttajat($id) { //vain rek??
+    public static function findVastanneetKayttajat($id) {
         $query = DB::connection()->prepare('SELECT Kayttaja.* FROM Aanestajalista, Kayttaja WHERE Aanestajalista.aanestys_id = :id AND Kayttaja.id = Aanestajalista.kayttaja_id');
         $query->execute(array('id' => $id));
 
@@ -184,58 +206,32 @@ class Aanestys extends BaseModel {
 
     public function validate_nimi() {
         $errors = array();
-        $errors = array_merge($errors, $this->validate_string_minimum_length($this->nimi, 3));
-        $errors = array_merge($errors, $this->validate_string_maximum_length($this->nimi, 100));
+        $errors = array_merge($errors, $this->validate_string_minimum_length($this->nimi, 3, 'nimi'));
+        $errors = array_merge($errors, $this->validate_string_maximum_length($this->nimi, 100, 'nimi'));
         return $errors;
     }
 
     public function validate_lisatieto() {
         $errors = array();
-        $errors = array_merge($errors, $this->validate_string_maximum_length($this->lisatieto, 1000));
+        $errors = array_merge($errors, $this->validate_string_maximum_length($this->lisatieto, 1000, 'lisatieto'));
         return $errors;
     }
 
     public function validate_alkamisaika() {
         $errors = array();
-        $errors = array_merge($errors, self::validate_date($this->alkamisaika));
-//        if (strtotime($this->alkamisaika) < strtotime(date("Y-m-d"))) {
-//            $errors[] = 'Äänestys voi alkaa aikaisintaan tänään!';
-//        }
+        $errors = array_merge($errors, self::validate_date($this->alkamisaika, 'Alkamisaika'));
         return $errors;
     }
 
     public function validate_loppumisaika() {
         $errors = array();
-        $errors = array_merge($errors, self::validate_date($this->loppumisaika));
+        $errors = array_merge($errors, self::validate_date($this->loppumisaika, 'Päättymisaika'));
         if (strtotime($this->loppumisaika) < strtotime($this->alkamisaika)) {
             $errors[] = 'Äänestys ei voi loppua ennen alkamista!';
         }
         if (strtotime($this->loppumisaika) < strtotime(date("Y-m-d"))) {
             $errors[] = 'Äänestys ei voi olla päättynyt vielä!';
         }
-        return $errors;
-    }
-
-    public function validate_date($date) {
-        $errors = array();
-
-        if ($date == '') {
-            $errors[] = 'Päivämäärä täytyy päättää';
-        }
-
-        $d = DateTime::createFromFormat('Y-m-d', $date);
-        if ($d && $d->format('Y-m-d') !== $date) {
-            $errors[] = 'Päivämäärä täytyy päättää!';
-        }
-
-        //Tämä estää asdfghjkl syötteet, mutta estää myös chromen päivämääräavustuksen toiminnan
-//        if (preg_match("/^(\d{4})-(\d{2})-(\d{2}) ([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-])$/", $date, $matches)) {
-//            if (checkdate($matches[2], $matches[3], $matches[1])) {
-//                return $errors;
-//            }
-//        } else {
-//            $errors[] = 'Päivämäärä täytyy päättää!';
-//        }
         return $errors;
     }
 

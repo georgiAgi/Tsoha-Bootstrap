@@ -6,7 +6,7 @@ class Kayttaja extends BaseModel {
 
     public function __construct($attributes) {
         parent::__construct($attributes);
-        $this->validators = array('validate_nimi', 'validate_tiedot');
+        $this->validators = array('validate_nimi', 'validate_tiedot', 'validate_salasana');
     }
 
     public static function all() {
@@ -19,7 +19,6 @@ class Kayttaja extends BaseModel {
 
 
         foreach ($rows as $row) {
-            // Tämä on PHP:n hassu syntaksi alkion lisäämiseksi taulukkoon :)
             $kayttajat[] = new Kayttaja(array(
                 'id' => $row['id'],
                 'nimi' => $row['nimi'],
@@ -71,7 +70,7 @@ class Kayttaja extends BaseModel {
         return $aanestykset;
     }
 
-    public static function findAanestyksetJoihinVastattu($id) { //vain rek??
+    public static function findAanestyksetJoihinVastattu($id) {
         $query = DB::connection()->prepare('SELECT Aanestys.* FROM Aanestajalista, Aanestys WHERE Aanestajalista.kayttaja_id = :id AND Aanestys.id = Aanestajalista.aanestys_id');
         $query->execute(array('id' => $id));
 
@@ -162,14 +161,21 @@ class Kayttaja extends BaseModel {
 
     public function validate_nimi() {
         $errors = array();
-        $errors = array_merge($errors, $this->validate_string_minimum_length($this->nimi, 3));
-        $errors = array_merge($errors, $this->validate_string_maximum_length($this->nimi, 100));
+        $errors = array_merge($errors, $this->validate_string_minimum_length($this->nimi, 3, 'nimi'));
+        $errors = array_merge($errors, $this->validate_string_maximum_length($this->nimi, 100, 'nimi'));
+        return $errors;
+    }
+
+    public function validate_salasana() {
+        $errors = array();
+        $errors = array_merge($errors, $this->validate_string_minimum_length($this->salasana, 3, 'salasana'));
+        $errors = array_merge($errors, $this->validate_string_maximum_length($this->salasana, 100, 'salasana'));
         return $errors;
     }
 
     public function validate_tiedot() {
         $errors = array();
-        $errors = array_merge($errors, $this->validate_string_maximum_length($this->tiedot, 1000));
+        $errors = array_merge($errors, $this->validate_string_maximum_length($this->tiedot, 1000, 'käyttäjätieto'));
         return $errors;
     }
 

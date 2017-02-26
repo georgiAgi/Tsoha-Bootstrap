@@ -5,11 +5,7 @@ function check_logged_in() {
 }
 
 $routes->get('/', function() {
-    HelloWorldController::index();
-});
-
-$routes->get('/hiekkalaatikko', function() {
-    HelloWorldController::hiekka();
+    BaseController::index();
 });
 
 $routes->get('/candidate/edit/:id', 'check_logged_in', function($id) {
@@ -37,7 +33,7 @@ $routes->post('/candidate/new/:id', function($id) {
     EhdokasController::store($id);
 });
 
-$routes->get('/candidate/new/:id', function($id) { //äänestyksen id
+$routes->get('/candidate/new/:id', 'check_logged_in', function($id) { //äänestyksen id
     EhdokasController::newCandidate($id);
 });
 
@@ -55,10 +51,6 @@ $routes->get('/user/delete/:id', 'check_logged_in', function($id) {
 
 $routes->post('/user/delete/:id', function($id) {
     KayttajaController::destroy($id);
-});
-
-$routes->get('/user/show', function() { //ei tarvetta
-    HelloWorldController::userShow();
 });
 
 $routes->get('/user/show/:id', function($id) {
@@ -85,10 +77,6 @@ $routes->post('/user/register', function() {
     KayttajaController::handle_register();
 });
 
-$routes->get('/vote/show', function() {
-    HelloWorldController::voteShow();
-});
-
 $routes->post('/vote/show', function() {
     AanestysController::store();
 });
@@ -103,10 +91,6 @@ $routes->get('/vote/new', 'check_logged_in', function() {
 
 $routes->get('/vote/show/:id', function($id) {
     AanestysController::show($id);
-});
-
-$routes->get('/vote/edit', function() { //HUOM HELLOWORLD, EI OIKEAA KÄYTTÖÄ
-    HelloWorldController::voteEdit();
 });
 
 $routes->get('/vote/edit/:id', 'check_logged_in', function($id) {

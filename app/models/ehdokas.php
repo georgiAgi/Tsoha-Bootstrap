@@ -19,7 +19,6 @@ class Ehdokas extends BaseModel {
 
 
         foreach ($rows as $row) {
-            // Tämä on PHP:n hassu syntaksi alkion lisäämiseksi taulukkoon :)
             $ehdokkaat[] = new Ehdokas(array(
                 'id' => $row['id'],
                 'nimi' => $row['nimi'],
@@ -34,6 +33,25 @@ class Ehdokas extends BaseModel {
     public static function find($id) {
         $query = DB::connection()->prepare('SELECT * FROM Ehdokas WHERE id = :id LIMIT 1');
         $query->execute(array('id' => $id));
+        $row = $query->fetch();
+
+        if ($row) {
+            $ehdokas = new Ehdokas(array(
+                'id' => $row['id'],
+                'nimi' => $row['nimi'],
+                'lisatieto' => $row['lisatieto'],
+                'aanestys_id' => $row['aanestys_id']
+            ));
+
+            return $ehdokas;
+        }
+
+        return null;
+    }
+    
+    public static function findByName($nimi, $aanestys_id) {
+        $query = DB::connection()->prepare('SELECT * FROM ehdokas WHERE nimi = :nimi AND aanestys_id = :aanestys_id LIMIT 1');
+        $query->execute(array('nimi' => $nimi, 'aanestys_id' => $aanestys_id));
         $row = $query->fetch();
 
         if ($row) {
@@ -76,14 +94,14 @@ class Ehdokas extends BaseModel {
 
     public function validate_nimi() {
         $errors = array();
-        $errors = array_merge($errors, $this->validate_string_minimum_length($this->nimi, 3));
-        $errors = array_merge($errors, $this->validate_string_maximum_length($this->nimi, 100));
+        $errors = array_merge($errors, $this->validate_string_minimum_length($this->nimi, 3, 'nimi'));
+        $errors = array_merge($errors, $this->validate_string_maximum_length($this->nimi, 100, 'nimi'));
         return $errors;
     }
 
     public function validate_lisatieto() {
         $errors = array();
-        $errors = array_merge($errors, $this->validate_string_maximum_length($this->lisatieto, 1000));
+        $errors = array_merge($errors, $this->validate_string_maximum_length($this->lisatieto, 1000, 'lisätieto'));
         return $errors;
     }
 

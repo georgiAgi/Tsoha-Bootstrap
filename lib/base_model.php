@@ -28,25 +28,40 @@ class BaseModel {
         return $errors;
     }
 
-    public function validate_string_minimum_length($string, $length) {
+    public function validate_string_minimum_length($string, $length, $name) {
         $errors = array();
         if ($string == '' || $string == null) {
-            $errors[] = 'Ei saa olla tyhjä!';
+            $errors[] = 'Ei saa olla tyhjä ' . $name . '.';
         }
         if (strlen($string) < $length) {
-            $errors[] = 'Pituuden tulee olla vähintään ' . $length . ' merkkiä!';
+            $errors[] = 'Liian lyhyt ' . $name . '. Pituuden tulee olla vähintään ' . $length . ' merkkiä!';
         }
 
         return $errors;
     }
 
-    public function validate_string_maximum_length($string, $length) {
+    public function validate_string_maximum_length($string, $length, $name) {
         $errors = array();
 
         if (strlen($string) > $length) {
-            $errors[] = 'Pituus saa olla korkeintaan ' . $length . ' merkkiä!';
+            $errors[] = 'Liian pitkä ' . $name . '. Pituus saa olla korkeintaan ' . $length . ' merkkiä!';
         }
 
+        return $errors;
+    }
+
+    public function validate_date($date, $name) {
+        $errors = array();
+
+        if ($date == '') {
+            $errors[] = $name . ' täytyy päättää!';
+        }
+
+        $d = DateTime::createFromFormat('Y-m-d', $date);
+        if ($d && $d->format('Y-m-d') !== $date) {
+            $errors[] = $name . ' väärässä muodossa!';
+        }
+        
         return $errors;
     }
 
