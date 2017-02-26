@@ -34,7 +34,7 @@ $routes->post('/candidate/new/:id', function($id) {
 });
 
 $routes->get('/candidate/new/:id', 'check_logged_in', function($id) { //äänestyksen id
-    EhdokasController::newCandidate($id);
+    EhdokasController::new_candidate($id);
 });
 
 $routes->get('/user/edit/:id', 'check_logged_in', function($id) {
@@ -86,7 +86,7 @@ $routes->get('/vote/list', function() {
 });
 
 $routes->get('/vote/new', 'check_logged_in', function() {
-    AanestysController::newVote();
+    AanestysController::new_vote();
 });
 
 $routes->get('/vote/show/:id', function($id) {
@@ -114,5 +114,5 @@ $routes->get('/vote/results/:id', 'check_logged_in', function($id) {
 });
 
 $routes->get('/vote/publicresults/:id', function($id) {
-    AanestysController::publicResults($id);
+    AanestysController::public_results($id);
 });

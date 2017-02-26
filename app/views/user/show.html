@@ -3,7 +3,11 @@
 <h1>{{kayttaja.nimi}}</h1>
 
 {% if message %}
-<div class="alert alert-danger">{{message}}</div>
+<div class="alert alert-success">{{message}}</div>
+{% endif %}
+
+{% if error %}
+<div class="alert alert-danger">{{error}}</div>
 {% endif %}
 
 <p>
@@ -25,7 +29,7 @@
     </thead>
 
     <tbody>
-        {% for aanestys in kayttaja.findKayttajanAanestykset(kayttaja.id) %}
+        {% for aanestys in kayttaja.find_kayttajan_aanestykset(kayttaja.id) %}
         <tr>
             <td><a href="{{base_path}}/vote/show/{{aanestys.id}}">{{aanestys.nimi}}</a></td>
             <td>{{aanestys.alkamisaika}}</td>
@@ -50,7 +54,7 @@
     </thead>
 
     <tbody>
-        {% for aanestys in kayttaja.findAanestyksetJoihinVastattu(kayttaja.id) %}
+        {% for aanestys in kayttaja.find_aanestykset_joihin_vastattu(kayttaja.id) %}
         <tr>
             <td><a href="{{base_path}}/vote/show/{{aanestys.id}}">{{aanestys.nimi}}</a></td>
             <td>{{aanestys.alkamisaika}}</td>

@@ -46,7 +46,7 @@ class KayttajaController extends BaseController {
             'salasana' => $params['salasana']
         ));
 
-        if ($kayttaja->findByName($params['nimi']) != null) {
+        if ($kayttaja->find_by_name($params['nimi']) != null) {
             View::make('user/register.html', array('error' => 'Käyttäjänimi on jo käytössä!'));
         }
 
@@ -67,7 +67,7 @@ class KayttajaController extends BaseController {
         if ($kayttaja->id == $id) {
             View::make('user/edit.html', array('kayttaja' => $kayttaja));
         }
-        Redirect::to('/user/show/' . $id, array('message' => 'Vain käyttäjä voi muokata omia tietojaan!'));
+        Redirect::to('/user/show/' . $id, array('error' => 'Vain käyttäjä voi muokata omia tietojaan!'));
     }
 
     public static function update($id) {
@@ -88,7 +88,7 @@ class KayttajaController extends BaseController {
             $errors[] = 'Salasanojen täytyy olla samat!';
         }
 
-        $samanniminenKayttaja = $kayttaja->findByName($params['nimi']);
+        $samanniminenKayttaja = $kayttaja->find_by_name($params['nimi']);
         if ($samanniminenKayttaja != null) {
             if ($samanniminenKayttaja->id != $id) {
                 $errors[] = 'Samanniminen käyttäjä on jo olemassa!';
@@ -116,7 +116,7 @@ class KayttajaController extends BaseController {
         if ($user->id == $kayttaja->id) {
             View::make('user/delete.html', array('kayttaja' => $kayttaja));
         }
-        Redirect::to('/user/show/' . $kayttaja->id, array('message' => 'Vain Käyttäjä voi poistaa omat tunnukset!'));
+        Redirect::to('/user/show/' . $kayttaja->id, array('error' => 'Vain Käyttäjä voi poistaa omat tunnukset!'));
     }
 
 }

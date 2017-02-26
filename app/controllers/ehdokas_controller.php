@@ -2,7 +2,7 @@
 
 class EhdokasController extends BaseController {
 
-    public static function newCandidate($id) {
+    public static function new_candidate($id) {
         $aanestys = Aanestys::find($id);
         $kayttaja = self::get_user_logged_in();
         if ($kayttaja->id == $aanestys->jarjestaja_id) {
@@ -24,7 +24,7 @@ class EhdokasController extends BaseController {
         if ($kayttaja->id == $aanestys->jarjestaja_id) {
             View::make('candidate/edit.html', array('ehdokas' => $ehdokas));
         }
-        Redirect::to('/candidate/show/' . $id, array('message' => 'Vain äänestyksen järjestäjä voi muokata ehdokkaiden tietoja!'));
+        Redirect::to('/candidate/show/' . $id, array('error' => 'Vain äänestyksen järjestäjä voi muokata ehdokkaiden tietoja!'));
     }
 
     public static function store($aanestysID) {
@@ -37,7 +37,7 @@ class EhdokasController extends BaseController {
 
         $errors = $ehdokas->errors();
 
-        if ($ehdokas->findByName($params['nimi'], $aanestysID) != null) {
+        if ($ehdokas->find_by_name($params['nimi'], $aanestysID) != null) {
             $errors[] = 'Samanniminen ehdokas on jo tässä äänestyksessä!';
         }
 
@@ -64,7 +64,7 @@ class EhdokasController extends BaseController {
 
         $errors = $ehdokas->errors();
 
-        $samanniminenEhdokas = $ehdokas->findByName($params['nimi'], $ehdokas->find($id)->aanestys_id);
+        $samanniminenEhdokas = $ehdokas->find_by_name($params['nimi'], $ehdokas->find($id)->aanestys_id);
         if ($samanniminenEhdokas != null) {
             if ($samanniminenEhdokas->id != $id) {
                 $errors[] = 'Samanniminen ehdokas on jo luotu!';
@@ -83,28 +83,28 @@ class EhdokasController extends BaseController {
         $ehdokas = Ehdokas::find($id);
         $aanestys = Aanestys::find($ehdokas->aanestys_id);
 
-        self::voteTimeCheck($aanestys);
+        self::vote_time_check($aanestys);
 
         if ($aanestys->anonyymi == FALSE) {
             self::check_logged_in();
             $kayttaja = self::get_user_logged_in();
 
-            if ($kayttaja::findOnkoAanestanyt($kayttaja->id, $aanestys->id)) {
-                Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Olet jo äänestänyt!'));
+            if ($kayttaja::find_onko_aanestanyt($kayttaja->id, $aanestys->id)) {
+                Redirect::to('/vote/show/' . $aanestys->id, array('error' => 'Olet jo äänestänyt!'));
             }
 
             $kayttaja::vote($kayttaja->id, $aanestys->id);
         }
 
         Aani::save($id);
-        View::make('/vote/show.html', array('aanestys' => $aanestys, 'message' => 'Äänestit onnistuneesti.', 'error' => 'Äänestit jo'));
+        View::make('/vote/show.html', array('aanestys' => $aanestys, 'message' => 'Äänestit onnistuneesti.', 'alert' => 'Äänestit jo'));
     }
 
-    public static function voteTimeCheck($aanestys) {
+    public static function vote_time_check($aanestys) {
         if (strtotime($aanestys->alkamisaika) > strtotime(date("Y-m-d"))) {
-            Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Äänestys ei ole vielä alkanut!'));
+            Redirect::to('/vote/show/' . $aanestys->id, array('error' => 'Äänestys ei ole vielä alkanut!'));
         } else if (strtotime($aanestys->loppumisaika) < strtotime(date("Y-m-d"))) {
-            Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Äänestys on jo päättynyt!'));
+            Redirect::to('/vote/show/' . $aanestys->id, array('error' => 'Äänestys on jo päättynyt!'));
         }
 
         return;
@@ -118,7 +118,7 @@ class EhdokasController extends BaseController {
             $ehdokas->destroy();
             View::make('/vote/show.html', array('aanestys' => $aanestys, 'message' => 'Ehdokas on poistettu onnistuneesti!'));
         } else {
-            Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Vain järjestäjä voi poistaa ehdokkaan!'));
+            Redirect::to('/vote/show/' . $aanestys->id, array('error' => 'Vain järjestäjä voi poistaa ehdokkaan!'));
         }
     }
 }

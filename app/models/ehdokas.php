@@ -49,7 +49,7 @@ class Ehdokas extends BaseModel {
         return null;
     }
     
-    public static function findByName($nimi, $aanestys_id) {
+    public static function find_by_name($nimi, $aanestys_id) {
         $query = DB::connection()->prepare('SELECT * FROM ehdokas WHERE nimi = :nimi AND aanestys_id = :aanestys_id LIMIT 1');
         $query->execute(array('nimi' => $nimi, 'aanestys_id' => $aanestys_id));
         $row = $query->fetch();
@@ -68,7 +68,7 @@ class Ehdokas extends BaseModel {
         return null;
     }
 
-    public static function findAanimaara($id) {
+    public static function find_aanimaara($id) {
         $query = DB::connection()->prepare('SELECT COUNT(*) FROM Aani WHERE ehdokas_id = :id');
         $query->execute(array('id' => $id));
         $row = $query->fetch();

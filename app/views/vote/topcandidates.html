@@ -2,12 +2,6 @@
 {% block content %}
 <h1>Äänestyksen {{aanestys.nimi}} tulokset</h1>
 
-{% if message %}
-<div class="alert alert-danger">
-<ul><li>{{message}}</li></ul>
-</div>
-{% endif %}
-
 <p>
     {{aanestys.lisatieto}}
 </p>
@@ -32,11 +26,11 @@
     </thead>
 
     <tbody>
-        {% for ehdokas in aanestys.findTop5Ehdokkaat(aanestys.id) %}
+        {% for ehdokas in aanestys.find_top5_ehdokkaat(aanestys.id) %}
         <tr>
             <td><a href="{{base_path}}/candidate/show/{{ehdokas.id}}">{{ehdokas.nimi}}</a></td>
             <td>{{ehdokas.lisatieto}}</td>
-            <td>{{ehdokas.findAanimaara(ehdokas.id)}}</td>
+            <td>{{ehdokas.find_aanimaara(ehdokas.id)}}</td>
         </tr>
         {% endfor %}
     </tbody>

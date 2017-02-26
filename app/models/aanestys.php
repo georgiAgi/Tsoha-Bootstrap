@@ -71,7 +71,7 @@ class Aanestys extends BaseModel {
         return null;
     }
 
-    public static function findByName($nimi) {
+    public static function find_by_name($nimi) {
         $query = DB::connection()->prepare('SELECT * FROM Aanestys WHERE nimi = :nimi LIMIT 1');
         $query->execute(array('nimi' => $nimi));
         $row = $query->fetch();
@@ -94,7 +94,7 @@ class Aanestys extends BaseModel {
         return null;
     }
 
-    public static function findEhdokkaat($id) {
+    public static function find_ehdokkaat($id) {
         $query = DB::connection()->prepare('SELECT * FROM Ehdokas WHERE Ehdokas.aanestys_id = :id');
         $query->execute(array('id' => $id));
 
@@ -113,7 +113,7 @@ class Aanestys extends BaseModel {
         return $ehdokkaat;
     }
 
-    public static function findAndSortEhdokkaat($id) {
+    public static function find_and_sort_ehdokkaat($id) {
         $query = DB::connection()->prepare('SELECT ehdokas.*, COUNT(aani.id) AS aanimaara
     FROM ehdokas LEFT JOIN aani 
     ON ehdokas.id = aani.ehdokas_id
@@ -137,7 +137,7 @@ class Aanestys extends BaseModel {
         return $ehdokkaat;
     }
 
-    public static function findTop5Ehdokkaat($id) {
+    public static function find_top5_ehdokkaat($id) {
         $query = DB::connection()->prepare('SELECT ehdokas.nimi, ehdokas.lisatieto, ehdokas.id, COUNT(aani.id) AS aanimaara
     FROM ehdokas LEFT JOIN aani 
     ON ehdokas.id = aani.ehdokas_id
@@ -161,7 +161,7 @@ class Aanestys extends BaseModel {
         return $ehdokkaat;
     }
 
-    public static function findVastanneetKayttajat($id) {
+    public static function find_vastanneet_kayttajat($id) {
         $query = DB::connection()->prepare('SELECT Kayttaja.* FROM Aanestajalista, Kayttaja WHERE Aanestajalista.aanestys_id = :id AND Kayttaja.id = Aanestajalista.kayttaja_id');
         $query->execute(array('id' => $id));
 

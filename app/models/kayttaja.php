@@ -47,7 +47,7 @@ class Kayttaja extends BaseModel {
         return null;
     }
 
-    public static function findKayttajanAanestykset($id) {
+    public static function find_kayttajan_aanestykset($id) {
         $query = DB::connection()->prepare('SELECT * FROM Aanestys WHERE jarjestaja_id = :id');
         $query->execute(array('id' => $id));
 
@@ -70,7 +70,7 @@ class Kayttaja extends BaseModel {
         return $aanestykset;
     }
 
-    public static function findAanestyksetJoihinVastattu($id) {
+    public static function find_aanestykset_joihin_vastattu($id) {
         $query = DB::connection()->prepare('SELECT Aanestys.* FROM Aanestajalista, Aanestys WHERE Aanestajalista.kayttaja_id = :id AND Aanestys.id = Aanestajalista.aanestys_id');
         $query->execute(array('id' => $id));
 
@@ -93,7 +93,7 @@ class Kayttaja extends BaseModel {
         return $aanestykset;
     }
 
-    public static function findOnkoAanestanyt($kayttaja_id, $aanestys_id) {
+    public static function find_onko_aanestanyt($kayttaja_id, $aanestys_id) {
         $query = DB::connection()->prepare('SELECT * FROM Aanestajalista WHERE kayttaja_id = :kayttaja_id AND aanestys_id = :aanestys_id');
         $query->execute(array('kayttaja_id' => $kayttaja_id, 'aanestys_id' => $aanestys_id));
 
@@ -106,7 +106,7 @@ class Kayttaja extends BaseModel {
         return FALSE;
     }
 
-    public static function findByName($nimi) {
+    public static function find_by_name($nimi) {
         $query = DB::connection()->prepare('SELECT * FROM Kayttaja WHERE nimi = :nimi LIMIT 1');
         $query->execute(array('nimi' => $nimi));
         $row = $query->fetch();

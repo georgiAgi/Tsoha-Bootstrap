@@ -18,10 +18,10 @@ class AanestysController extends BaseController {
         if ($aanestys->jarjestaja_id == $user->id) {
             View::make('vote/results.html', array('aanestys' => $aanestys));
         }
-        self::publicResults($id);
+        self::public_results($id);
     }
 
-    public function newVote() {
+    public function new_vote() {
         self::check_logged_in();
         View::make('vote/new.html');
     }
@@ -41,7 +41,7 @@ class AanestysController extends BaseController {
         
         $errors = $aanestys->errors();
 
-        if ($aanestys->findByName($params['nimi']) != null) {
+        if ($aanestys->find_by_name($params['nimi']) != null) {
             $errors[] = 'Samanniminen äänestys on jo luotu!';
         }
 
@@ -60,7 +60,7 @@ class AanestysController extends BaseController {
         if ($user->id == $aanestys->jarjestaja_id) {
             View::make('vote/edit.html', array('aanestys' => $aanestys));
         }
-        Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Vain järjestäjä voi muokata äänestystä!'));
+        Redirect::to('/vote/show/' . $aanestys->id, array('error' => 'Vain järjestäjä voi muokata äänestystä!'));
     }
 
     public static function update($id) {
@@ -80,7 +80,7 @@ class AanestysController extends BaseController {
 
         $errors = $aanestys->errors();
 
-        $samanniminenAanestys = $aanestys->findByName($params['nimi']);
+        $samanniminenAanestys = $aanestys->find_by_name($params['nimi']);
         if ($samanniminenAanestys != null) {
             if ($samanniminenAanestys->id != $id) {
                 $errors[] = 'Samanniminen äänestys on jo luotu!';
@@ -108,17 +108,17 @@ class AanestysController extends BaseController {
         if ($user->id == $aanestys->jarjestaja_id) {
             View::make('vote/delete.html', array('aanestys' => $aanestys));
         }
-        Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Vain järjestäjä voi poistaa äänestyksen!'));
+        Redirect::to('/vote/show/' . $aanestys->id, array('error' => 'Vain järjestäjä voi poistaa äänestyksen!'));
     }
 
-    public function publicResults($id) {
+    public function public_results($id) {
         $aanestys = Aanestys::find($id);
         if ($aanestys->julkisettulokset == 1) {
             View::make('vote/topcandidates.html', array('aanestys' => $aanestys));
         } elseif ($aanestys->julkisettulokset == 2) {
             View::make('vote/candidatescores.html', array('aanestys' => $aanestys));
         }
-        Redirect::to('/vote/show/' . $aanestys->id, array('message' => 'Tuloksia ei saatavilla.'));
+        Redirect::to('/vote/show/' . $aanestys->id, array('error' => 'Tuloksia ei saatavilla.'));
     }
 
 }

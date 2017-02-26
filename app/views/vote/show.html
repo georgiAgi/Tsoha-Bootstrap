@@ -3,8 +3,14 @@
 <h1>{{aanestys.nimi}}</h1>
 
 {% if message %}
-<div class="alert alert-danger">
+<div class="alert alert-success">
 <ul><li>{{message}}</li></ul>
+</div>
+{% endif %}
+
+{% if error %}
+<div class="alert alert-danger">
+<ul><li>{{error}}</li></ul>
 </div>
 {% endif %}
 
@@ -32,12 +38,12 @@
     </thead>
 
     <tbody>
-        {% for ehdokas in aanestys.findEhdokkaat(aanestys.id) %}
+        {% for ehdokas in aanestys.find_ehdokkaat(aanestys.id) %}
         <tr>
             <td><a href="{{base_path}}/candidate/show/{{ehdokas.id}}">{{ehdokas.nimi}}</a></td>
             <td>{{ehdokas.lisatieto}}</td>
-            {% if error %}
-            <th><button disabled="">{{error}}</button></th>
+            {% if alert %}
+            <th><button disabled="">{{alert}}</button></th>
             {% else %}
             <th><a class="btn btn-success btn-sm" href="{{base_path}}/candidate/vote/{{ehdokas.id}}">Äänestä</a></th>
             {% endif %}

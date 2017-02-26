@@ -3,8 +3,12 @@
 <h1>{{ehdokas.nimi}}</h1>
 
 {% if message %}
-<div class="alert alert-danger">{{message}}</div>
+<div class="alert alert-success">{{message}}</div>
 <a href="{{base_path}}/candidate/new/{{aanestys.id}}"  class="btn btn-success">Lisää toinen ehdokas</a> 
+{% endif %}
+
+{% if error %}
+<div class="alert alert-danger">{{error}}</div>
 {% endif %}
 
 <h3>Ehdokkaana {{aanestys.nimi}} äänestyksessä</h3>
