@@ -57,4 +57,29 @@
 </table>
 {% endif %}
 
+{% if aktiviteettiraportti %}
+<h3>Aktiviteettiraportti</h3>
+<h6>Äänestysaika jaettu kymmeneen yhtä suureen osaan, ja aikaikkunoiden ääniosuus ilmoitettu alla.</h6>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Aikaikkuna</th>
+            <th>Äänimäärä per kymmenys</th>
+            <th>Äänimäärän osuus per kymmenys</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for kymmenesosa in aktiviteettiraportti.aktiviteettiraportti(aanestys) %}
+        <tr>
+            <td>{{loop.index}}. kymmenys</td>
+            <td>{{kymmenesosa}}</td>
+            <td>{{kymmenesosa/aktiviteettiraportti.koko()*100}} %</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+
 {% endblock %}

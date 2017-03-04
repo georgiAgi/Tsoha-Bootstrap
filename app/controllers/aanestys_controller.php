@@ -16,6 +16,11 @@ class AanestysController extends BaseController {
         $user = self::get_user_logged_in();
         $aanestys = Aanestys::find($id);
         if ($aanestys->jarjestaja_id == $user->id) {
+            if ($aanestys->loppumisaika < date("Y-m-d H:i:s")) {
+                $aktiviteettiraportti = new Aktiviteettiraportti($aanestys);
+                $aktiviteettiraportti->aktiviteettiraportti($aanestys);
+                View::make('vote/results.html', array('aanestys' => $aanestys, 'aktiviteettiraportti' => $aktiviteettiraportti));
+            }
             View::make('vote/results.html', array('aanestys' => $aanestys));
         }
         self::public_results($id);

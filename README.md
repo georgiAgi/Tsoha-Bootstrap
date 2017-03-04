@@ -1,6 +1,6 @@
 # Tietokantasovelluksen esittelysivu
 
-HUOM: Linkit näkymiin ovat vanhentuneita. Osa toimii, osa ei. Käytä mieluummin sovellusta.
+4.3.2017: Aktiviteettiraportti on nyt lisätty. Se näkyy äänestyksen järjestäjälle "Tulokset"-sivulla äänestyksen päätyttyä.
 
 16.2.2017: Voit äänestää. Rekisteröidy tai käytä esim. Käyttäjätunnus: **Armas** salasana: **hella** 
 
@@ -15,7 +15,3 @@ Yleisiä linkkejä:
 
 [Linkki äänestysjärjestelmän aihekuvaukseen](http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Aanestys.html) 
 
-## Puutteita toistaiseksi:
-
-* Anonyymisessiot
-* Aktiviteettiraportti äänestyksen jälkeen

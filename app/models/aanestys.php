@@ -179,6 +179,24 @@ class Aanestys extends BaseModel {
         return $kayttajat;
     }
 
+    public static function find_aanet($id) {
+        $query = DB::connection()->prepare('SELECT * FROM Aani, Ehdokas WHERE Ehdokas.aanestys_id = :id AND Ehdokas.id = Aani.ehdokas_id');
+        $query->execute(array('id' => $id));
+
+        $rows = $query->fetchAll();
+        $aanet = array();
+
+        foreach ($rows as $row) {
+            $aanet[] = new Aani(array(
+                'id' => $row['id'],
+                'ehdokas_id' => $row['ehdokas_id'],
+                'aika' => $row['aika'],
+            ));
+        }
+
+        return $aanet;
+    }
+
     public static function anonyymi($id) {
         $aanestys = self::find($id);
         if ($aanestys->anonyymi) {
